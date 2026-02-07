@@ -1,0 +1,7 @@
+{
+    "participants": [
+        {"token": "fe7885b5-2f5c-47f6-aeae-0b578074d2ff", "label": "Alice"},
+        {"token": "47dad7f9-3fd7-4336-832a-bffe6ba2bdeb", "label": "Bob"},
+        {"token": "534bde4d-f05a-4945-9be9-68bbe8d17231", "label": "Carol"}
+    ]
+}

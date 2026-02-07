@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey</title>
+    <link href="https://unpkg.com/survey-core/survey-core.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f4f6f8;
+        }
+        #surveyContainer {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .already-completed {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 600px;
+            margin: 80px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .already-completed h2 { color: #333; }
+        .already-completed p { color: #666; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    {% if already_completed %}
+    <div class="already-completed">
+        <h2>Survey Already Completed</h2>
+        <p>You have already submitted your response. Thank you!</p>
+    </div>
+    {% else %}
+    <div id="surveyContainer"></div>
+    <script>
+        const surveyJson = {{ survey_json | safe }};
+        const token = "{{ token }}";
+
+        const survey = new Survey.Model(surveyJson);
+
+        survey.onComplete.add(async (sender) => {
+            const results = sender.data;
+            try {
+                const response = await fetch(`/api/submit/${token}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(results),
+                });
+                if (!response.ok) {
+                    const err = await response.json();
+                    alert("Error submitting survey: " + (err.error || "Unknown error"));
+                }
+            } catch (e) {
+                alert("Network error. Please try again.");
+                console.error(e);
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            survey.render(document.getElementById("surveyContainer"));
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
