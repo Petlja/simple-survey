@@ -143,11 +143,18 @@ def survey_page(token):
     if not participant:
         flask_abort(404)
 
+    previous_answers = None
+    if is_completed(token):
+        resp = db.session.query(Response).filter_by(token=token).first()
+        if resp:
+            previous_answers = resp.response_data  # already a JSON string
+
     return render_template(
         "survey.html",
         token=token,
         survey_json=json.dumps(load_survey_json()),
         already_completed=is_completed(token),
+        previous_answers=previous_answers,
     )
 
 
@@ -251,20 +258,22 @@ class SurveySubmit(MethodView):
 
     @survey_blp.response(200, StatusSchema)
     def post(self, token):
-        """Accept and store a survey response."""
+        """Accept and store a survey response (or update an existing one)."""
         participant = find_participant(token)
         if not participant:
             abort(404, message="Invalid token")
-
-        if is_completed(token):
-            abort(409, message="Survey already completed")
 
         data = request.get_json()
         if not data:
             abort(400, message="No data provided")
 
-        r = Response(token=token, response_data=json.dumps(data))
-        db.session.add(r)
+        existing = db.session.query(Response).filter_by(token=token).first()
+        if existing:
+            existing.response_data = json.dumps(data)
+            existing.submitted_at = datetime.now(timezone.utc)
+        else:
+            r = Response(token=token, response_data=json.dumps(data))
+            db.session.add(r)
         db.session.commit()
         return {"status": "ok"}
 

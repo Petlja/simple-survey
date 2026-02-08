@@ -35,9 +35,47 @@
 <body>
     {% if already_completed %}
     <div class="already-completed">
-        <h2>Survey Already Completed</h2>
-        <p>You have already submitted your response. Thank you!</p>
+        <h2>Upitnik je već popunjen</h2>
+        <p>Već ste poslali svoje odgovore. Hvala!</p>
+        <button id="updateBtn" style="margin-top: 20px; padding: 10px 24px; font-size: 1em; cursor: pointer; background: #1ab394; color: white; border: none; border-radius: 4px;">Ažuriraj odgovore</button>
     </div>
+    <div id="surveyContainer" style="display: none;"></div>
+    <script>
+        const surveyJson = {{ survey_json | safe }};
+        const token = "{{ token }}";
+        const previousAnswers = {{ previous_answers | safe if previous_answers else '{}' }};
+
+        const survey = new Survey.Model(surveyJson);
+        survey.data = previousAnswers;
+
+        survey.onTextMarkdown.add((sender, options) => {
+            options.html = options.text;
+        });
+
+        survey.onComplete.add(async (sender) => {
+            const results = sender.data;
+            try {
+                const response = await fetch(`/api/submit/${token}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(results),
+                });
+                if (!response.ok) {
+                    const err = await response.json();
+                    alert("Error submitting survey: " + (err.error || "Unknown error"));
+                }
+            } catch (e) {
+                alert("Network error. Please try again.");
+                console.error(e);
+            }
+        });
+
+        document.getElementById("updateBtn").addEventListener("click", function() {
+            document.querySelector(".already-completed").style.display = "none";
+            document.getElementById("surveyContainer").style.display = "block";
+            survey.render(document.getElementById("surveyContainer"));
+        });
+    </script>
     {% else %}
     <div id="surveyContainer"></div>
     <script>

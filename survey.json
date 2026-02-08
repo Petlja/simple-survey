@@ -1,80 +1,884 @@
 {
-    "title": "Upitnik o odgovorima AI Asistenta",
-    "description": "U ovom upitniku će se nalaziti primeri raznih odgovora AI asistenta na razne prompt-ove i od vas se očekuje da ocenite svaki od odgovora",
-    "pages": [
+  "title": "Upitnik o odgovorima AI Asistenta",
+  "description": "U ovom upitniku će se nalaziti primeri raznih odgovora AI asistenta na razne prompt-ove i od vas se očekuje da ocenite svaki od odgovora",
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
         {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "html",
-                    "name": "page_title",
-                    "html": "<h4>AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми три питања за проверу знања</h3>"
-                },
-                {
-                    "type": "panel",
-                    "name": "aiPanel",
-                    "title": "Odgovor AI asistenta",
-                    "elements": [
-                        {
-                            "type": "html",
-                            "name": "responce",
-                            "html": "<h3>Питања за проверу знања</h3>\n<ol>\n<li>\n<p><strong>Објасните разлику између уноса стринга коришћењем <code>scanf(&quot;%s&quot;, ...)</code> и <code>gets(...)</code>. Како се ово одражава на обраду уноса са празнинама?</strong><br />\n<em>Одговор</em>:</p>\n<ul>\n<li><code>scanf(&quot;%s&quot;, ...)</code> чита стринг до прве празнине (белинe), док <code>gets(...)</code> чита цео стринг до знака за нови ред (<code>\n</code>).</li>\n<li>Пример: Ако корисник унесе &quot;Marko Petrović&quot;, <code>scanf</code> ће запамтити само &quot;Marko&quot;, док <code>gets</code> запамти цео текст.</li>\n</ul>\n</li>\n<li>\n<p><strong>Зашто је важно коришћење динамичке алокације меморије (<code>malloc</code>/<code>calloc</code>) при раду са функцијама као што је <code>gets</code>?</strong><br />\n<em>Одговор</em>:</p>\n<ul>\n<li>Динамичка алокација омогућава резервисање меморије која одговара дужини уноса, што спречава преписивање (buffer overflow) статичких низова као што су <code>char ime[50]</code>.</li>\n<li>Пример: Ако корисник унесе дужи текст од 50 карактера, <code>gets</code> би изазвало пад програма без динамичке алокације.</li>\n</ul>\n</li>\n<li>\n<p><strong>Напишите пример кода који демонстрира форматирани испис стринга коришћењем <code>printf</code> са спецификаторима <code>%20.15s</code> и <code>%-.20s</code>. Објасните шта сваки део спецификатора ради.</strong><br />\n<em>Одговор</em>:</p>\n<pre><code class='language-c'>#include &lt;stdio.h&gt;\nint main(void) {\n    char ime[] = &quot;Dušan&quot;;\n    printf(&quot;1. %20.15s\n&quot;, ime);  // Ширина поља 20, максимално 15 карактера\n    printf(&quot;2. %-.20s\n&quot;, ime);   // Лева поравнања, ширина 20\n    return 0;\n}\n</code></pre>\n<ul>\n<li><code>%20.15s</code>: Исписује &quot;Dušan&quot; уз 15 карактера ширина, ако је дужи од 15, сече се.</li>\n<li><code>%-.20s</code>: Исписује &quot;Dušan&quot; поравнато лево на 20 карактера, ако је краћи, додаје се белина десно.</li>\n</ul>\n</li>\n</ol>"
-                        }
-                    ]
-                },
-                {
-                    "type": "matrix",
-                    "name": "q1",
-                    "isRequired": true,
-                    "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
-                    "columns": [
-                        {
-                            "value": 5,
-                            "text": "Potpuno se slažem"
-                        },
-                        {
-                            "value": 4,
-                            "text": "Slažem se"
-                        },
-                        {
-                            "value": 3,
-                            "text": "Neodlučan sam"
-                        },
-                        {
-                            "value": 2,
-                            "text": "Ne slažem se"
-                        },
-                        {
-                            "value": 1,
-                            "text": "Uopšte se ne slažem"
-                        }
-                    ],
-                    "rows": [
-                        {
-                            "value": "dom",
-                            "text": "Odgovor je stručno precizan"
-                        },
-                        {
-                            "value": "edu",
-                            "text": "Odgovor je nastavno-metodološki dobar"
-                        },
-                        {
-                            "value": "use",
-                            "text": "Odgovor je upotrebljiv nastavniku"
-                        },
-                        {
-                            "value": "gra",
-                            "text": "Odgovor je pravopisno i gramatički ispravan"
-                        },
-                        {
-                            "value": "srp",
-                            "text": "Odgovor je jezično-stilski korektan"
-                        }
-                    ]
-                }
-            ]
+          "type": "html",
+          "name": "page1_title",
+          "html": "<h4>(LLM A) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми три питања за проверу знања из ове лекције</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page1_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page1_response",
+              "html": "<ol>\n<li>\n<p>Објасните разлику између форматираног и неформатираног уноса стринга у програмском језику C. Како се користе функције <code>scanf</code> и <code>gets</code> за унос стринга?</p>\n</li>\n<li>\n<p>Како се користе функције <code>calloc</code> и <code>malloc</code> за алокацију меморије за стрингове у C? Наведите пример где се ове функције користе за динамичко алоцирање меморије за стринг.</p>\n</li>\n<li>\n<p>Како се користе форматски спецификатори у функцији <code>printf</code> за испис стрингова? Објасните како се може контролисати ширина поља и број приказаних карактера у форматираном излазу.</p>\n</li>\n</ol>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "A1__1__gpt-4o__q1"
         }
-    ],
-    "showProgressBar": "top",
-    "completedHtml": "<h3>Hvala vam!</h3>"
+      ]
+    },
+    {
+      "name": "page2",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page2_title",
+          "html": "<h4>(LLM B) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми три питања за проверу знања из ове лекције</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page2_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page2_response",
+              "html": "<ol>\n<li>\n<p><strong>Како се разликују форматирани и неформатирани унос стрингова у језику C, и које функције се користе за њихову имплементацију?</strong><br />\n<em>Одговор:</em> Форматирани унос користи <code>scanf</code> са <code>%s</code> (чита до прве празнине), док неформатирани унос користи <code>gets</code> (чита цео ред до <code>\\n</code> или <code>EOF</code>).</p>\n</li>\n<li>\n<p><strong>Шта ради спецификатор <code>%20.15s</code> у функцији <code>printf</code> и како се он одликује од <code>%s</code>?</strong><br />\n<em>Одговор:</em> Спецификатор <code>%20.15s</code> исписује стринг у 20 позиција, али ограничава број карактера на 15. Ако је стринг дужи од 15 карактера, вишак се не исписује, а ако је краћи, додају се празнина испред или иза, у зависности од подешавања.</p>\n</li>\n<li>\n<p><strong>Зашто се користе функције <code>calloc</code> и <code>malloc</code> при алоцирању меморије за стрингове, и како се разликују у пракси?</strong><br />\n<em>Одговор:</em> <code>calloc</code> алоцира меморију и иницијализује је нулама, док <code>malloc</code> само алоцира меморију без иницијализације. Обе се користе за динамичко управљање меморијом код стрингова који нису дефинисани као низови.</p>\n</li>\n</ol>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "A1__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page3",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page3_title",
+          "html": "<h4>(LLM C) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми три питања за проверу знања из ове лекције</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page3_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page3_response",
+              "html": "<h3>Питања за проверу знања</h3>\n<ol>\n<li>\n<p><strong>Објасни разлику између функција <code>scanf</code> са <code>%s</code> и <code>gets</code> при уносу стрингова. Дати пример где би коришћење <code>gets</code> било погодније од <code>scanf</code>.</strong><br />\n<em>(Напомена: Обратити пажњу на третман празнина и нових линија у уносу.)</em></p>\n</li>\n<li>\n<p><strong>Шта значи коришћење <code>calloc</code> уместо <code>malloc</code> при динамичкој алоцирацији меморије за стринг? Дати пример кода где је <code>calloc</code> погодније.</strong><br />\n<em>(Напомена: Објаснити разлику у иницијализацији алокиране меморије.)</em></p>\n</li>\n<li>\n<p><strong>Објасни како ради форматирани испис стринга коришћењем <code>printf</code> са спецификатором <code>%s</code> и модификаторима као што су <code>%20.15s</code>. Дати пример излаза за стринг дужине 20 карактера када се користи <code>%10.5s</code>.</strong><br />\n<em>(Напомена: Обратити пажњу на поравнање, ограничење дужине и попуњавање празнина.)</em></p>\n</li>\n</ol>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "A1__1__Qwen3-32B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page4",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page4_title",
+          "html": "<h4>(LLM A) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/3/8306\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми четири питања за вежбу из ове лекције</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page4_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page4_response",
+              "html": "<p>Нисам сигуран да могу да помогнем у томе.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "A2__1__gpt-4o__q1"
+        }
+      ]
+    },
+    {
+      "name": "page5",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page5_title",
+          "html": "<h4>(LLM B) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/3/8306\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми четири питања за вежбу из ове лекције</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page5_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page5_response",
+              "html": "<h3>Питања за вежбу:</h3>\n<ol>\n<li>\n<p><strong>Објасни зашто се низови преносе у функције као референце (адресе), а не као вредности. Како ово утиче на ефикасност програма?</strong><br />\n<em>(Одговор: Низови се преносе као референце (адреса првог елемента) да би се избегло копирање целог низа, што је ефикасније, посебно за велике низове. Промене у функцији директно утичу на оригинални низ у главном програму.)</em></p>\n</li>\n<li>\n<p><strong>Напиши функцију која прима низ целих бројева и враћа највећи елемент у том низу. Како би та функција била дефинисана и позивана у главном програму?</strong><br />\n<em>(Пример: <code>int max_element(int a[], int n)</code>; позив: <code>max_element(niz, broj_elemenata)</code>)</em></p>\n</li>\n<li>\n<p><strong>Шта се деси ако у функцији која прима низ као параметар измениш вредност једног елемента низа? Да ли ће та промена бити видљива у главном програму? Објасни.</strong><br />\n<em>(Одговор: Да, јер се низ преноси по референци, промене у функцији директно утичу на оригинални низ у главном програму.)</em></p>\n</li>\n<li>\n<p><strong>Креирај функцију <code>prosek</code> која рачуна просечну вредност елемената низа реалних бројева. Како би та функција била дефинисана и које би вредности враћала?</strong><br />\n<em>(Пример: <code>double prosek(double a[], int n)</code>; враћа просек као <code>double</code> вредност.)</em></p>\n</li>\n</ol>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "A2__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page6",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page6_title",
+          "html": "<h4>(LLM C) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/3/8306\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Дај ми четири питања за вежбу из ове лекције</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page6_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page6_response",
+              "html": "<p>Ево четири питања за вежбу из лекције:</p>\n<ol>\n<li>\n<p><strong>Испис у обрнутом редоследу</strong><br />\nНаписати програм који уноси <code>n</code> целих бројева и приказује их у обрнутом редоследу коришћењем функција за унос (<code>unos</code>) и испис (<code>ispis_unazad</code>).<br />\n<a href=\"https://petlja.org/biblioteka/r/Zbirka/ispis_u_obratnom_redosledu\">Пример решења</a></p>\n</li>\n<li>\n<p><strong>Најнижа температура</strong><br />\nДате су температуре у <code>n</code> градова. Написати функцију <code>min_temp</code> која враћа најнижу температуру из низа.<br />\n<a href=\"https://petlja.org/biblioteka/r/Zbirka/najmanja_temperatura1\">Пример решења</a></p>\n</li>\n<li>\n<p><strong>Минимално одступање од просека</strong><br />\nЗа низ од <code>n</code> реалних бројева, одредити најмање апсолутно одступање од просека коришћењем глобалне променљиве за суму елемената.<br />\n<a href=\"https://petlja.org/biblioteka/r/Zbirka/minimalno_odstupanje_od_proseka\">Пример решења</a></p>\n</li>\n<li>\n<p><strong>Разлика сума до и од максимума</strong><br />\nУносимо масе предмета. Написати функције <code>suma_do_max</code> и <code>suma_od_max</code> које израчунавају суме елемената пре и после првог појављивања максималног елемента, а затим одредити њихову разлику.<br />\n<a href=\"https://petlja.org/biblioteka/r/Zbirka/razlika_suma_do_max_i_od_max\">Пример решења</a></p>\n</li>\n</ol>\n<p>Сви задаци захтевају коришћење функција и низова, као и разумевање преноса низова у функцијама.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "A2__1__Qwen3-32B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page7",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page7_title",
+          "html": "<h4>(LLM A) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Направи ми план часа за ову лекцију</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page7_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page7_response",
+              "html": "<p>Нисам сигуран како да направим план часа. Могу да предложим следећи оквирни план на основу садржаја лекције:</p>\n<h3>План часа: Унос и испис стрингова у програмском језику C</h3>\n<p><strong>Циљ часа:</strong><br />\nСтуденти ће научити разлике између форматираног и неформатираног уноса и исписа стрингова у C програмском језику, као и основне технике управљања меморијом за стрингове.</p>\n<p><strong>Трајање:</strong> 45 минута</p>\n<hr />\n<p><strong>Увод (5 минута):</strong></p>\n<ul>\n<li>Упознавање са циљевима часа.</li>\n<li>Кратак преглед значаја уноса и исписа стрингова у програмима.</li>\n</ul>\n<p><strong>Главни део (30 минута):</strong></p>\n<ol>\n<li>\n<p><strong>Форматирани унос и испис (10 минута):</strong></p>\n<ul>\n<li>Објашњење функција <code>scanf</code> и <code>printf</code> са примерима.</li>\n<li>Демонстрација како <code>scanf</code> чита стринг до прве празнине.</li>\n<li>Примери коришћења различитих форматских спецификатора у <code>printf</code>.</li>\n</ul>\n</li>\n<li>\n<p><strong>Неформатирани унос и испис (10 минута):</strong></p>\n<ul>\n<li>Објашњење функција <code>gets</code> и <code>puts</code>.</li>\n<li>Демонстрација како <code>gets</code> чита цео ред текста до новог реда.</li>\n<li>Примери исписа са <code>puts</code>.</li>\n</ul>\n</li>\n<li>\n<p><strong>Управљање меморијом (10 минута):</strong></p>\n<ul>\n<li>Објашњење коришћења <code>malloc</code> и <code>calloc</code> за динамичку алокацију меморије.</li>\n<li>Примери како се резервише меморија за стрингове.</li>\n</ul>\n</li>\n</ol>\n<p><strong>Закључак (5 минута):</strong></p>\n<ul>\n<li>Резиме наученог.</li>\n<li>Одговори на питања студената.</li>\n</ul>\n<p><strong>Задатак за домаћи рад:</strong></p>\n<ul>\n<li>Написати програм који користи и форматирани и неформатирани унос и испис стрингова.</li>\n</ul>\n<hr />\n<p>Надам се да ће овај оквирни план бити од помоћи.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "B1__1__gpt-4o__q1"
+        }
+      ]
+    },
+    {
+      "name": "page8",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page8_title",
+          "html": "<h4>(LLM B) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Направи ми план часа за ову лекцију</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page8_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page8_response",
+              "html": "<h3>План часа: Унос и испис стрингова у C језику</h3>\n<hr />\n<h4><strong>Циљ часа</strong></h4>\n<ul>\n<li>Упознавање са методима уноса и исписа стрингова у C језику (форматирани и неформатирани).</li>\n<li>Разумевање разлика између <code>scanf</code>/<code>printf</code> и <code>gets</code>/<code>puts</code>.</li>\n<li>Примена алокације меморије за стрингове (<code>calloc</code>, <code>malloc</code>).</li>\n<li>Демонстрација форматираних излаза коришћењем спецификатора.</li>\n</ul>\n<hr />\n<h4><strong>Материјал</strong></h4>\n<ul>\n<li>Компјутери са IDE-ом (нпр. Code::Blocks, Visual Studio).</li>\n<li>Примери кода из лекције.</li>\n<li>Таблица за писање кода и објашњења.</li>\n</ul>\n<hr />\n<h4><strong>Трајање</strong></h4>\n<ul>\n<li>90 минута</li>\n</ul>\n<hr />\n<h4><strong>Кораци часа</strong></h4>\n<ol>\n<li>\n<p><strong>Увод (10 минута)</strong></p>\n<ul>\n<li>Кратко понављање концепта стрингова у C (низ карактера, нултерминатор <code>\\0</code>).</li>\n<li>Питање: &quot;Како се уносе и исписују стрингови у C?&quot;</li>\n</ul>\n</li>\n<li>\n<p><strong>Теорија: Форматирани и неформатирани унос/испис (20 минута)</strong></p>\n<ul>\n<li><strong>Форматирани унос:</strong>\n<ul>\n<li><code>scanf(&quot;%s&quot;, str)</code> – чита до прве празнина.</li>\n<li>Пример: Унос имена и презимена са конверзијом.</li>\n</ul>\n</li>\n<li><strong>Неформатирани унос:</strong>\n<ul>\n<li><code>gets(str)</code> – чита до <code>\\n</code> или <code>EOF</code>.</li>\n<li>Пример: Унос целих редова текста.</li>\n</ul>\n</li>\n<li><strong>Форматирани испис:</strong>\n<ul>\n<li><code>printf(&quot;%s&quot;, str)</code> – исписује све карактере до <code>\\0</code>.</li>\n<li>Примери са спецификаторима: <code>%20s</code>, <code>%-20s</code>, <code>%20.15s</code>.</li>\n</ul>\n</li>\n<li><strong>Неформатирани испис:</strong>\n<ul>\n<li><code>puts(str)</code> – додаје <code>\\n</code> на крај.</li>\n</ul>\n</li>\n</ul>\n</li>\n<li>\n<p><strong>Демонстрација кода (20 минута)</strong></p>\n<ul>\n<li>Покретање програма из примера:\n<ul>\n<li>Унос и испис са конверзијом (<code>scanf</code>).</li>\n<li>Унос и испис без конверзије (<code>gets</code> и <code>puts</code>).</li>\n<li>Форматирани излаз са разним спецификаторима.</li>\n</ul>\n</li>\n<li>Објашњење излаза:\n<ul>\n<li>Заšто <code>scanf</code> зауставља унос на првој празнини.</li>\n<li>Разлика између <code>printf</code> и <code>puts</code> у испису.</li>\n</ul>\n</li>\n</ul>\n</li>\n<li>\n<p><strong>Практична вежба (25 минута)</strong></p>\n<ul>\n<li><strong>Задатак 1:</strong> Написати програм за унос и испис имена и презимена са конверзијом и без.</li>\n<li><strong>Задатак 2:</strong> Демонстрирати форматирани излаз стринга коришћењем спецификатора (<code>%20s</code>, <code>%-20s</code>).</li>\n<li><strong>Задатак 3:</strong> Преписати и анализирати дати програм са показивачима и објашњење излаза.</li>\n</ul>\n</li>\n<li>\n<p><strong>Обрађивање питања и закључак (10 минута)</strong></p>\n<ul>\n<li>Питања:\n<ul>\n<li>&quot;Шта се дешава ако се <code>gets</code> користи без провере дужине стринга?&quot;</li>\n<li>&quot;Како се алоцира меморија за динамичке стрингове?&quot;</li>\n</ul>\n</li>\n<li>Кратко понављање кључних тачака:\n<ul>\n<li>Безбедност <code>gets</code> (опасност од буферовог прелива).</li>\n<li>Коришћење <code>calloc</code> и <code>malloc</code> за динамичке стрингове.</li>\n</ul>\n</li>\n</ul>\n</li>\n<li>\n<p><strong>Домаћи задатак (5 минута)</strong></p>\n<ul>\n<li>Написати програм који користи <code>scanf</code>, <code>gets</code>, <code>printf</code> и <code>puts</code> за унос и испис стринга.</li>\n<li>Додајте форматирани излаз са спецификаторима.</li>\n</ul>\n</li>\n</ol>\n<hr />\n<h4><strong>Оцена</strong></h4>\n<ul>\n<li>Учешће у дискусији (10%).</li>\n<li>Практична вежба (40%).</li>\n<li>Домаћи задатак (50%).</li>\n</ul>\n<hr />\n<h4><strong>Напомене</strong></h4>\n<ul>\n<li>Подсетити ученике да <code>gets</code> није безбедан (може довести до буферовог прелива).</li>\n<li>Користити <code>fgets</code> уместо <code>gets</code> у реалним пројектима.</li>\n</ul>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "B1__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page9",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page9_title",
+          "html": "<h4>(LLM C) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/5/8327\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Направи ми план часа за ову лекцију</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page9_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page9_response",
+              "html": "<h3>План часа: Унос и испис стрингова у C-у</h3>\n<hr />\n<h4><strong>Циљ часа</strong></h4>\n<ul>\n<li>Упознавање са форматираним и неформатираним уносом/исписом стрингова.</li>\n<li>Примена функција <code>scanf</code>, <code>gets</code>, <code>printf</code>, <code>puts</code>.</li>\n<li>Објашњење разлика између метода уноса и исписа.</li>\n<li>Управљање меморијом коришћењем <code>calloc</code> и <code>malloc</code>.</li>\n</ul>\n<hr />\n<h4><strong>Материјали</strong></h4>\n<ul>\n<li>Примери кодова (као у тексту).</li>\n<li>Презентација са синтаксом и примерима.</li>\n<li>Рачунари за практичну вежбу.</li>\n</ul>\n<hr />\n<h4><strong>Трајање</strong></h4>\n<ul>\n<li>90 минута (теорија: 40 мин, вежба: 40 мин, закључак: 10 мин).</li>\n</ul>\n<hr />\n<h4><strong>Садржај часа</strong></h4>\n<h5><strong>1. Увод (5 мин)</strong></h5>\n<ul>\n<li>Објашњење значаја рада са стринговима у програмирању.</li>\n<li>Разлика између форматираних и неформатираних метода.</li>\n</ul>\n<h5><strong>2. Форматирани унос и испис (15 мин)</strong></h5>\n<ul>\n<li><strong>Функције:</strong> <code>scanf</code> са <code>%s</code>, <code>printf</code> са <code>%s</code>.</li>\n<li><strong>Пример:</strong> Унос и испис имена и презимена.<pre><code class=\"language-c\">scanf(&quot;%s&quot;, ime); // Унос до прве празнине.\nprintf(&quot;Ime: %s&quot;, ime); // Испис свих карактера до '\\0'.\n</code></pre>\n</li>\n<li><strong>Лимитације:</strong> <code>scanf</code> не чита стрингове са празнинама.</li>\n</ul>\n<h5><strong>3. Неформатирани унос и испис (15 мин)</strong></h5>\n<ul>\n<li><strong>Функције:</strong> <code>gets</code>, <code>puts</code>.</li>\n<li><strong>Пример:</strong> Унос и испис целог текста.<pre><code class=\"language-c\">gets(ime_prezime); // Чита све до '\\n'.\nputs(ime_prezime); // Испис са додавањем '\\n'.\n</code></pre>\n</li>\n<li><strong>Пажња:</strong> <code>gets</code> може изазвати проблеме са сигурношћу (буферови).</li>\n</ul>\n<h5><strong>4. Управљање меморијом (10 мин)</strong></h5>\n<ul>\n<li><strong><code>calloc</code> и <code>malloc</code>:</strong><pre><code class=\"language-c\">char *s = (char*)calloc(100, sizeof(char)); // Алоцира 100 байтова.\n</code></pre>\n</li>\n<li><strong>Пример:</strong> Динамичко алоцирање за стрингове.</li>\n</ul>\n<h5><strong>5. Пракса: Испис стринга са форматом (15 мин)</strong></h5>\n<ul>\n<li><strong>Примери:</strong><pre><code class=\"language-c\">printf(&quot;%20s&quot;, ime); // Допуњава 20 позиција.\nprintf(&quot;%-20.15s&quot;, ime); // Лево поравнање, максимум 15 карактера.\n</code></pre>\n</li>\n</ul>\n<h5><strong>6. Примена показивача и стрингова (10 мин)</strong></h5>\n<ul>\n<li><strong>Пример:</strong><pre><code class=\"language-c\">char *poruka = &quot;Zdravo&quot;;\nprintf(&quot;%s&quot;, poruka + 2); // Испис &quot;ravo&quot;.\n</code></pre>\n</li>\n</ul>\n<hr />\n<h4><strong>Активности</strong></h4>\n<ol>\n<li>\n<p><strong>Вежба 1 (20 мин):</strong></p>\n<ul>\n<li>Ученици напису програм који учитава име и презиме коришћењем <code>scanf</code> и <code>gets</code>, па их исписује.</li>\n<li>Поређење резултата (нпр. унос &quot;Ana Marija&quot; са <code>scanf</code> и <code>gets</code>).</li>\n</ul>\n</li>\n<li>\n<p><strong>Вежба 2 (15 мин):</strong></p>\n<ul>\n<li>Демонстрација форматираних исписа (нпр. <code>%10.5s</code>).</li>\n</ul>\n</li>\n<li>\n<p><strong>Групни рад (10 мин):</strong></p>\n<ul>\n<li>Дискусија о предностима и манама <code>scanf</code> и <code>gets</code>.</li>\n</ul>\n</li>\n</ol>\n<hr />\n<h4><strong>Оцењивање</strong></h4>\n<ul>\n<li>Провера разумевања кроз усне питања (нпр. &quot;Зашто <code>gets</code> не чува празнине?&quot;).</li>\n<li>Провера вежби: Да ли програми коректно користе методе.</li>\n</ul>\n<hr />\n<h4><strong>Задаци за кућу</strong></h4>\n<ol>\n<li>Написати програм који учитава текст коришћењем <code>gets</code> и исписује га уз форматирање (<code>%-30s</code>).</li>\n<li>Објаснити разлику између <code>scanf(&quot;%s&quot;, s)</code> и <code>gets(s)</code>.</li>\n</ol>\n<hr />\n<h4><strong>Закључак</strong></h4>\n<ul>\n<li>Рецимпру: Када користити <code>scanf</code>/<code>printf</code> и <code>gets</code>/<code>puts</code>.</li>\n<li>Питања ученика и одговори.</li>\n</ul>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "B1__1__Qwen3-32B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page10",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page10_title",
+          "html": "<h4>(LLM A) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/3/8306\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Које главне концепте треба да објасним у овој лекцији</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page10_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page10_response",
+              "html": "<p>У овој лекцији треба да објасните следеће главне концепте:</p>\n<ol>\n<li>\n<p><strong>Параметри функција</strong>: Како функције могу примати низове као параметре, што омогућава ефикасно руковање подацима без копирања велике количине података.</p>\n</li>\n<li>\n<p><strong>Преношење низова</strong>: Низови се преносе функцијама по референци, коришћењем адресе првог елемента. Име низа само по себи представља ту адресу.</p>\n</li>\n<li>\n<p><strong>Декларација функција</strong>: При декларисању функције која прихвата низ као параметар, није потребно наводити величину низа.</p>\n</li>\n<li>\n<p><strong>Примери функција</strong>:</p>\n<ul>\n<li><code>zbir(int a[], int n)</code>: Рачуна збир елемената у низу.</li>\n<li><code>unos_niza(int a[20], int n)</code>: Уноси елементе у низ.</li>\n<li><code>ispis_niza(int a[], int n)</code>: Исписује елементе низа.</li>\n<li><code>invert(int a[], int n)</code>: Инвертује елементе низа.</li>\n<li><code>sort(int a[], int n)</code>: Сортира елементе низа користећи метод избора.</li>\n</ul>\n</li>\n<li>\n<p><strong>Модификације низа</strong>: Измене направљене на низу унутар функције су видљиве и ван функције, јер се низови преносе по референци.</p>\n</li>\n<li>\n<p><strong>Типови повратних вредности функција</strong>: Функције могу враћати вредности, али сами низови не могу бити враћени; само скаларне вредности могу бити враћене.</p>\n</li>\n<li>\n<p><strong>Практичне примене</strong>: Укључити практичне вежбе као што су креирање функција за унос, испис, инвертовање и сортирање низова, као и сложенији задаци који укључују више низова.</p>\n</li>\n</ol>\n<p>Ови концепти ће помоћи ученицима да разумеју како да раде са низовима у функцијама и како да манипулишу и обрађују податке ефикасно користећи низове у програмском језику C.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "B2__1__gpt-4o__q1"
+        }
+      ]
+    },
+    {
+      "name": "page11",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page11_title",
+          "html": "<h4>(LLM B) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/3/8306\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Које главне концепте треба да објасним у овој лекцији</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page11_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page11_response",
+              "html": "<h3>Главни концепти које треба објаснити у овој лекцији:</h3>\n<ol>\n<li>\n<p><strong>Пренос низова ка функцијама</strong></p>\n<ul>\n<li>Низови се преносе ка функцијама <strong>по адреси</strong> (референци), а не копирају се цели.</li>\n<li>Име низа у суштини представља адресу његовог првог елемента.</li>\n<li>У функцији се низ декларише као <code>тип_елемента[]</code> (нпр. <code>int a[]</code>), без потребе за навођењем димензије.</li>\n</ul>\n</li>\n<li>\n<p><strong>Функције са низовима</strong></p>\n<ul>\n<li>Примери функција:\n<ul>\n<li><code>zbir(int a[], int n)</code> – рачуна збир елемената низа.</li>\n<li><code>unos_niza(int a[20], int n)</code> – унос елемената у низ.</li>\n<li><code>ispis_niza(int a[], int n)</code> – испис елемената низа.</li>\n<li><code>invert(int a[], int n)</code> – инвертује елементе низа.</li>\n<li><code>sort(int a[], int n)</code> – сортира низ коришћењем методе избора.</li>\n</ul>\n</li>\n<li>Промене у низу унутар функције <strong>се видљиве и изван</strong> ње (јер се преноси по референци).</li>\n</ul>\n</li>\n<li>\n<p><strong>Манипулација низовима у функцијама</strong></p>\n<ul>\n<li>Низови могу бити модификовани у функцијама (нпр. инвертовање, сортирање).</li>\n<li>Функције могу вратити <strong>само скаларне вредности</strong>, а не цео низ (нпр. вратити број елемената или збир).</li>\n</ul>\n</li>\n<li>\n<p><strong>Практична примена</strong></p>\n<ul>\n<li>Креирање функција за:\n<ul>\n<li>Унос и испис елемената низа.</li>\n<li>Сортирање (метода избора).</li>\n<li>Инвертовање елемената.</li>\n</ul>\n</li>\n<li>Коришћење циклуса (<code>for</code>) за итерацију кроз елементе низа.</li>\n</ul>\n</li>\n<li>\n<p><strong>Важне ноте</strong></p>\n<ul>\n<li>Низ <strong>не може бити вредност функције</strong>, али може бити параметар.</li>\n<li>У функцији се не наводи димензија низа (нпр. <code>int a[]</code>, а не <code>int a[10]</code>).</li>\n<li>Примери из главног програма (нпр. <code>main()</code>):<pre><code class=\"language-c\">int a[7] = {1, 2, 3, 4, 5, 6, 7};\nprintf(&quot;Збир: %d&quot;, zbir(a, 7));\n</code></pre>\n</li>\n</ul>\n</li>\n<li>\n<p><strong>Примери из задатака</strong></p>\n<ul>\n<li>Формирање новог низа на бази услова (нпр. <code>nizB</code>, <code>nizC</code>).</li>\n<li>Коришћење постојећих функција за унос, испис и сортирање.</li>\n</ul>\n</li>\n</ol>\n<p>Ови концепти су основни за разумевање рада са низовима и функцијама у програмском језику C.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "B2__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page12",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page12_title",
+          "html": "<h4>(LLM C) AI asistentu je u kontekstu <a href=\"https://petlja.org/sr-Latn-RS/kurs/11234/3/8306\" target=\"_blank\">ove lekcije</a> zadat prompt:</h4><h3>Које главне концепте треба да објасним у овој лекцији</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page12_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page12_response",
+              "html": "<p>У овој лекцији треба објаснити следеће главне концепте:</p>\n<h3>1. <strong>Прислушкивање низова као параметара функција</strong></h3>\n<ul>\n<li>Низови се преносе у функције <strong>по референци</strong> (адреса првог елемента).</li>\n<li>Име низа у функцији служи као <strong>адреса првог елемента</strong>, дакле, низ се не копира, што је ефикасније за велике низове.</li>\n<li>Пример: <code>int zbir(int a[], int n)</code> — <code>a</code> је референца на низ, а <code>n</code> је број елемената.</li>\n</ul>\n<h3>2. <strong>Декларација функција са низовима</strong></h3>\n<ul>\n<li>При декларацији функције, <strong>димензија низа није обавезна</strong>.</li>\n<li>Пример: <code>void unos_niza(int a[20], int n)</code> — <code>20</code> је само информација за читатеља, а не за компајлер.</li>\n</ul>\n<h3>3. <strong>Модификација низова у функцијама</strong></h3>\n<ul>\n<li>Било какве измене елемената низа у функцији <strong>се одражавају у главном програму</strong> зато што се ради о истом подацима у меморији.</li>\n<li>Пример: Функција <code>invert</code> која инвертује елементе низа.</li>\n</ul>\n<h3>4. <strong>Ограничења вратио функција</strong></h3>\n<ul>\n<li>Функције <strong>не могу враћати низове</strong>, само скаларне вредности (нпр. <code>int</code>, <code>float</code>).</li>\n<li>Пример: Функција <code>zbir</code> враћа збир елемената као <code>int</code>.</li>\n</ul>\n<h3>5. <strong>Праксни примери функција</strong></h3>\n<ul>\n<li><strong><code>unos_niza</code></strong> — за унос елемената.</li>\n<li><strong><code>ispis_niza</code></strong> — за испис елемената.</li>\n<li><strong><code>invert</code></strong> — за инвертовање низа.</li>\n<li><strong><code>sort</code></strong> — за сортирање низа (метода избора).</li>\n<li><strong><code>nizB</code></strong> и <strong><code>nizC</code></strong> — за креирање нових низова на основу услова.</li>\n</ul>\n<h3>6. <strong>Примена петљи и стандардних функција</strong></h3>\n<ul>\n<li>Коришћење <code>for</code> петљи за итерацију кроз елементе низа.</li>\n<li>Исподводи <code>printf</code> и <code>scanf</code> за унос/испис података.</li>\n</ul>\n<h3>7. <strong>Ефикасност прислушкивања низова</strong></h3>\n<ul>\n<li>Према учењима, прислушкивање низова по референци <strong>избегава копирање великих количина података</strong>, што је критично за перформансе.</li>\n</ul>\n<h3>8. <strong>Примери из задатака</strong></h3>\n<ul>\n<li><strong>Инвертовање низа</strong> (свапивање елемената).</li>\n<li><strong>Сортирање низа</strong> (метода избора).</li>\n<li><strong>Формирање нових низова</strong> на основу услова (нпр. парни елементи множени индексом).</li>\n</ul>\n<h3>9. <strong>Глобалне променљиве и коришћење у функцијама</strong></h3>\n<ul>\n<li>У неким задацима (нпр. израчунавање просека), користе се глобалне променљиве као што је <code>s</code> за суму елемената.</li>\n</ul>\n<h3>10. <strong>Решавање комплексних задатака</strong></h3>\n<ul>\n<li>Пример: Одредити разлику суме маса предмета до и после првог највећег елемента.</li>\n<li>Коришћење помоћних функција (<code>max_masa_index</code>, <code>suma_do_max</code>, <code>suma_od_max</code>).</li>\n</ul>\n<h3>Кључни поуци:</h3>\n<ul>\n<li><strong>Референца vs. вредност</strong>: Низови се преносе по референци, док скаларни подаци по вредности.</li>\n<li><strong>Флексибилност</strong>: Функције могу радити са низовима било које димензије.</li>\n<li><strong>Ефикасност</strong>: Прислушкивање низова по референци уштеди меморију и време.</li>\n</ul>\n<p>Ови концепти треба да омогуће студентима да разумеју како да користе функције за ефикасну обраду низова у програмирању на C-у.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je stručno precizan"
+            },
+            {
+              "value": "edu",
+              "text": "Odgovor je nastavno-metodološki dobar"
+            },
+            {
+              "value": "use",
+              "text": "Odgovor je upotrebljiv nastavniku"
+            },
+            {
+              "value": "gra",
+              "text": "Odgovor je pravopisno i gramatički ispravan"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je jezično-stilski korektan"
+            }
+          ],
+          "name": "B2__1__Qwen3-32B__q1"
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "completedHtml": "<h3>Hvala vam!</h3>"
 }
