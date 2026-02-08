@@ -46,6 +46,10 @@
 
         const survey = new Survey.Model(surveyJson);
 
+        survey.onTextMarkdown.add((sender, options) => {
+            options.html = options.text;
+        });
+
         survey.onComplete.add(async (sender) => {
             const results = sender.data;
             try {
