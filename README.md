@@ -21,28 +21,36 @@ simple-survey/
 ├── survey.json             # Survey definition (SurveyJS format)
 ├── participants.json       # Seed file for initial participants
 ├── docker-compose.yml      # Local MS SQL Server for development
-├── simple_survey/
-│   ├── __init__.py         # Exports create_app()
-│   ├── app.py              # Flask application factory
-│   ├── models.py           # SQLAlchemy models
-│   └── templates/          # Jinja2 HTML templates
+└── simple_survey/
+    ├── __init__.py         # Exports create_app()
+    ├── app.py              # Flask application factory
+    ├── models.py           # SQLAlchemy models
+    └── templates/          # Jinja2 HTML templates
 ```
 
 ---
 
 ## Running directly from this repo
 
-### 1. Install dependencies
+### 1. Create virtual environment and install dependencies
+
+Create virtual environment for this project. We suggest to use `.venv` subdirectory to place virtual environment.
+
+Activate your virtual environment.
+
+If you don't have Poetry installed, install it in your virtual environment:
 
 ```bash
-# Install Poetry if you don't have it
 pip install poetry
+```
 
-# Install the package and all dev dependencies
+Install the package and all dev dependencies:
+
+```bash
 poetry install
 ```
 
-### 2. Configure environment
+### 2. Configure environment variables
 
 Create a `.env` file in the project root:
 
@@ -51,6 +59,8 @@ ADMIN_TOKEN=your-secret-token
 # DATABASE_URL defaults to sqlite:///survey.db if not set
 # DATABASE_URL=mssql+pymssql://user:pass@localhost:1433/survey
 ```
+
+Or set appropriate environment variables other way.
 
 ### 3. Run the app
 
@@ -82,7 +92,7 @@ PARTICIPANTS_SEED_PATH=/absolute/path/to/participants.json
 
 ## Using as a package in a deployment repo
 
-Create a separate deployment repo with the following files:
+If you need a deployment repo to Azure or other deployment from Git, put th following files in the repo:
 
 ### Repo structure
 
@@ -91,8 +101,7 @@ survey-deploy/
 ├── requirements.txt
 ├── app.py
 ├── survey.json
-├── participants.json
-└── .gitignore
+└── participants.json
 ```
 
 ### requirements.txt
