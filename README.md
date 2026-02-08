@@ -1,55 +1,156 @@
 # Simple Survey
 
-A lightweight Flask application for creating and distributing surveys using [SurveyJS](https://surveyjs.io/). Each participant receives a unique token link to submit their response.
+A lightweight Flask survey application using [SurveyJS](https://surveyjs.io/).
+Each participant receives a unique token link to submit their response.
 
 ## Features
 
 - Token-based survey access (one response per participant)
+- Option to update a previously submitted response
 - Survey defined in `survey.json` (SurveyJS format)
-- SQLAlchemy ORM with support for SQLite and PostgreSQL
+- SQLAlchemy ORM with support for SQLite, PostgreSQL, and MS SQL Server
 - REST API with Swagger UI documentation
 - Admin endpoints secured with a bearer token
+- Packaged with Poetry — installable as a dependency via git
 
-## Setup
+## Project Structure
 
-```bash
-pip install -r requirements.txt
+```
+simple-survey/
+├── pyproject.toml          # Poetry package definition
+├── survey.json             # Survey definition (SurveyJS format)
+├── participants.json       # Seed file for initial participants
+├── docker-compose.yml      # Local MS SQL Server for development
+├── simple_survey/
+│   ├── __init__.py         # Exports create_app()
+│   ├── app.py              # Flask application factory
+│   ├── models.py           # SQLAlchemy models
+│   └── templates/          # Jinja2 HTML templates
 ```
 
-## Running
+---
+
+## Running directly from this repo
+
+### 1. Install dependencies
 
 ```bash
-export ADMIN_TOKEN="your-secret-token"
-flask run
+# Install Poetry if you don't have it
+pip install poetry
+
+# Install the package and all dev dependencies
+poetry install
 ```
 
-The app will be available at `http://localhost:5000`.
+### 2. Configure environment
+
+Create a `.env` file in the project root:
+
+```dotenv
+ADMIN_TOKEN=your-secret-token
+# DATABASE_URL defaults to sqlite:///survey.db if not set
+# DATABASE_URL=mssql+pymssql://user:pass@localhost:1433/survey
+```
+
+### 3. Run the app
+
+Ensure your virtual environment is activated, then:
+
+```bash
+# Option A: Using Flask CLI
+FLASK_APP=simple_survey flask run
+
+# Option B: Using gunicorn (production)
+gunicorn "simple_survey:create_app()"
+```
+
+The app will look for `survey.json` and `participants.json` in the
+current working directory. You can override these paths with environment
+variables:
+
+```dotenv
+SURVEY_JSON_PATH=/absolute/path/to/survey.json
+PARTICIPANTS_SEED_PATH=/absolute/path/to/participants.json
+```
+
+### 4. Access
+
+- Survey page: `http://localhost:5000/s/<participant-token>`
+- Swagger UI: `http://localhost:5000/docs/`
+
+---
+
+## Using as a package in a deployment repo
+
+Create a separate deployment repo with the following files:
+
+### Repo structure
+
+```
+survey-deploy/
+├── requirements.txt
+├── app.py
+├── survey.json
+├── participants.json
+└── .gitignore
+```
+
+### requirements.txt
+
+Tag a release in this repo (`git tag v0.1.0 && git push origin v0.1.0`),
+then reference it:
+
+```txt
+simple-survey @ git+https://github.com/YOUR_USER/simple-survey.git@v0.1.0
+pymssql>=2.2
+gunicorn>=22.0
+```
+
+### app.py
+
+```python
+from simple_survey import create_app
+
+app = create_app()
+```
+
+### Running
+
+```bash
+gunicorn app:app
+```
+
+For Azure App Service, set `DATABASE_URL` and `ADMIN_TOKEN` as
+Application settings and use `gunicorn app:app` as the startup command.
+
+### Upgrading
+
+Update the tag in `requirements.txt` and redeploy.
+
+---
 
 ## Configuration
 
-| Variable | Description |
-|---|---|
-| `ADMIN_TOKEN` | Bearer token for admin API endpoints |
-| `DATABASE_URL` | Database connection string (default: `sqlite:///survey.db`) |
+| Variable                 | Description                                              |
+| ------------------------ | -------------------------------------------------------- |
+| `ADMIN_TOKEN`            | Bearer token for admin API endpoints                     |
+| `DATABASE_URL`           | Database connection string (default: `sqlite:///survey.db`) |
+| `SURVEY_JSON_PATH`       | Path to survey JSON file (default: `./survey.json`)      |
+| `PARTICIPANTS_SEED_PATH` | Path to participants seed file (default: `./participants.json`) |
 
-### Database examples
+### Database driver extras
 
 ```bash
-# SQLite (default)
-export DATABASE_URL="sqlite:///survey.db"
-
 # PostgreSQL
-export DATABASE_URL="postgresql://user:password@localhost:5432/survey"
+poetry install -E postgres
+
+# MS SQL Server
+poetry install -E mssql
+
+# Production server
+poetry install -E prod
 ```
 
 ## API Docs
 
 Swagger UI is available at `/docs/` when the app is running.
-
-## Project Structure
-
-- `app.py` — Flask application with API endpoints
-- `models.py` — SQLAlchemy database models
-- `survey.json` — Survey definition (SurveyJS format)
-- `participants.json` — Seed file for initial participants
-- `templates/` — HTML templates for survey and thank-you pages

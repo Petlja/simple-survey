@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "simple-survey"
+version = "0.1.0"
+description = "A lightweight Flask survey application using SurveyJS"
+authors = []
+readme = "README.md"
+packages = [{include = "simple_survey"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = ">=3.0"
+flask-smorest = ">=0.45"
+flask-sqlalchemy = ">=3.1"
+marshmallow = ">=3.20"
+python-dotenv = ">=1.0"
+
+[tool.poetry.extras]
+postgres = ["psycopg2-binary"]
+mssql = ["pymssql"]
+prod = ["gunicorn"]
+
+[tool.poetry.group.dev.dependencies]
+psycopg2-binary = ">=2.9"
+pymssql = ">=2.2"
+gunicorn = ">=22.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
