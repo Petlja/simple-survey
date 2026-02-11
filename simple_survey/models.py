@@ -1,4 +1,5 @@
-import uuid
+import base64
+import secrets
 from datetime import datetime, timezone
 
 from flask_sqlalchemy import SQLAlchemy
@@ -9,7 +10,11 @@ db = SQLAlchemy()
 class Participant(db.Model):
     __tablename__ = "participants"
 
-    token = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    token = db.Column(
+        db.String(64),
+        primary_key=True,
+        default=lambda: base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b"=").decode("ascii"),
+    )
     label = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
@@ -27,7 +32,7 @@ class Response(db.Model):
     __tablename__ = "responses"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    token = db.Column(db.String(36), db.ForeignKey("participants.token"), nullable=False, unique=True)
+    token = db.Column(db.String(64), db.ForeignKey("participants.token"), nullable=False, unique=True)
     response_data = db.Column(db.Text, nullable=False)
     submitted_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
