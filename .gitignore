@@ -5,3 +5,5 @@ __pycache__/
 survey.db
 dist/
 *.egg-info/
+survey.json
+

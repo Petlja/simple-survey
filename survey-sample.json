@@ -1,0 +1,560 @@
+{
+  "title": "Upitnik o odgovorima AI Asistenta",
+  "description": "U ovom upitniku će se nalaziti primeri raznih odgovora AI asistenta na razne prompt-ove i od vas se očekuje da ocenite svaki od odgovora",
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page1_title",
+          "html": "<h4>(LLM A) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/353/14/6912\" target=\"_blank\">Информатика 6 / Дититална писменост / Интернет сервиси</a> AI asistentu je zadat prompt:</h4><h3>Направи ми две групе од по три питања, свако питање са понуђених 4 одговора. \nОзначи шта су тачни одговори са објашњењем.\n</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page1_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page1_response",
+              "html": "<h2>Група 1: Интернет сервиси и комуникација (3 питања)</h2>\n<h3>1) Која су три основна типа интернет сервиса према намени?</h3>\n<p>А) Комуникациони сервиси, сервиси за пренос података, веб (WWW)<br />\nБ) Друштвене мреже, игре, претраживачи<br />\nВ) Програми, датотеке, уређаји<br />\nГ) Рутери, модеми, сервери</p>\n<p><strong>Тачан одговор: А</strong><br />\n<strong>Објашњење:</strong> У лекцији је наведено да се интернет сервиси према намени деле на: <strong>комуникационе сервисе</strong>, <strong>сервисе за пренос података</strong> и <strong>веб (WWW)</strong>.</p>\n<hr />\n<h3>2) Шта је пример асинхроне комуникације?</h3>\n<p>А) Видео-конференција (нпр. Zoom)<br />\nБ) Интернет телефонија (VoIP)<br />\nВ) Електронска пошта (имејл)<br />\nГ) Разговор уживо преко апликације за чет</p>\n<p><strong>Тачан одговор: В</strong><br />\n<strong>Објашњење:</strong> <strong>Асинхрона</strong> комуникација не захтева да обе особе буду присутне у исто време. Имејл је типичан пример јер поруку шаљеш кад ти одговара, а прималац је чита касније.</p>\n<hr />\n<h3>3) Која је улога модератора на форуму/дискусионој групи?</h3>\n<p>А) Да убрза интернет везу корисницима<br />\nБ) Да прати активности и упозорава на кршење правила<br />\nВ) Да шаље аутоматске имејлове свим корисницима<br />\nГ) Да креира URL адресе за веб-странице</p>\n<p><strong>Тачан одговор: Б</strong><br />\n<strong>Објашњење:</strong> У лекцији пише да модератор прати понашање корисника и реагује ако се крше правила форума и правила лепог понашања на интернету.</p>\n<hr />\n<h2>Група 2: Веб (WWW), URL и безбедност (3 питања)</h2>\n<h3>1) Шта је URL?</h3>\n<p>А) Програм за читање имејлова<br />\nБ) Јединствена адреса (локација) ресурса на интернету<br />\nВ) Врста рачунарског вируса<br />\nГ) Назив за групни чет</p>\n<p><strong>Тачан одговор: Б</strong><br />\n<strong>Објашњење:</strong> URL (<em>Uniform Resource Locator</em>) је <strong>јединствена адреса</strong> која показује где се неки ресурс налази на интернету.</p>\n<hr />\n<h3>2) Која тврдња је тачна?</h3>\n<p>А) Интернет и WWW су исто<br />\nБ) WWW је један од интернет сервиса, а интернет је шири појам<br />\nВ) WWW је назив за електронску пошту<br />\nГ) WWW служи само за видео-конференције</p>\n<p><strong>Тачан одговор: Б</strong><br />\n<strong>Објашњење:</strong> Лекција наглашава да <strong>WWW није синоним за интернет</strong>, већ је <strong>само један сервис</strong> који интернет пружа.</p>\n<hr />\n<h3>3) Чему служи HTTPS у односу на HTTP?</h3>\n<p>А) Да омогући максималну безбедност приликом приступа веб-сајту<br />\nБ) Да убрза куцање текста у претраживачу<br />\nВ) Да омогући слање имејлова без адресе<br />\nГ) Да замени веб-прегледач</p>\n<p><strong>Тачан одговор: А</strong><br />\n<strong>Објашњење:</strong> HTTPS је „безбедна“ варијанта HTTP протокола и служи да комуникација са сајтом буде <strong>заштићенија</strong> (нпр. приликом уноса лозинке).</p>\n<hr />\n<p>Ако желиш, могу да ти ове две групе одмах пребацим у формат за квиз (нпр. Google Forms стил: питање + 4 опције + кључ).</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A1__1__gpt-5.2__q1"
+        }
+      ]
+    },
+    {
+      "name": "page2",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page2_title",
+          "html": "<h4>(LLM B) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/353/14/6912\" target=\"_blank\">Информатика 6 / Дититална писменост / Интернет сервиси</a> AI asistentu je zadat prompt:</h4><h3>Направи ми две групе од по три питања, свако питање са понуђених 4 одговора. \nОзначи шта су тачни одговори са објашњењем.\n</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page2_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page2_response",
+              "html": "<h3>Група 1: Класификација интернет сервиса</h3>\n<p><strong>1. Кoji су три основне групе интернет сервиса?</strong><br />\nA) Комуникациони сервиси, сервиси за пренос података, веб (WWW)<br />\nB) Е-пошта, месинг листе, видео конференције<br />\nC) Веб прегледачи, URL-ови, HTTP протокол<br />\nD) Форуми, социјални мрежи, виртуелни светови</p>\n<p><strong>Тачан одговор:</strong> A) Комуникациони сервиси, сервиси за пренос података, веб (WWW)<br />\n<strong>Објашњење:</strong> У предавању је наведено да се интернет сервиси могу поделити на три основне групе: комуникационе, сервисе за пренос података и веб (WWW). Остали одговори су примери сервиса унутар ових категорија, а не саме групе.</p>\n<hr />\n<p><strong>2. Који од следећих примера припада асинхроној комуникацији?</strong><br />\nA) Видео конференција на Zoom<br />\nB) Е-пошта (маил)<br />\nC) Телефонија преко VoIP<br />\nD) Инстант месинг (нпр. Viber)</p>\n<p><strong>Тачан одговор:</strong> B) Е-пошта (маил)<br />\n<strong>Објашњење:</strong> Асинхрона комуникација се одвија без потребе да се корисници укључују у реалном времену. Е-пошта је класичан пример, док су остале опције синхроне (реално време).</p>\n<hr />\n<p><strong>3. Како изгледа структура е-поште (маил адресе)?</strong><br />\nA) корисничко име @ провајдер<br />\nB) провајдер @ корисничко име<br />\nC) корисничко име + провајдер<br />\nD) провајдер + корисничко име</p>\n<p><strong>Тачан одговор:</strong> A) корисничко име @ провајдер<br />\n<strong>Објашњење:</strong> Е-пошта се састоји од корисничког имена (нпр. dalibor_todorovic), знака @ и имена провајдера (нпр. outlook.com). Остали одговори нису исправни по структури.</p>\n<hr />\n<h3>Група 2: Веб и интернет технологије</h3>\n<p><strong>1. Шта је основна улога HTTPS протокола?</strong><br />\nA) Пренос текстуалних порука у реалном времену<br />\nB) Сигурни пренос података на интернету<br />\nC) Креирање веб-страница<br />\nD) Претраживање садржаја на интернету</p>\n<p><strong>Тачан одговор:</strong> B) Сигурни пренос података на интернету<br />\n<strong>Објашњење:</strong> HTTPS је сигурна верзија HTTP-а, коришћена за заштиту података приликом преноса (нпр. лозинке, банкарске информације). Остали одговори су увезани у друге технологије.</p>\n<hr />\n<p><strong>2. Који од следећих програма НЕ припада веб-прегледачима?</strong><br />\nA) Google Chrome<br />\nB) Microsoft Edge<br />\nC) Mozilla Firefox<br />\nD) Microsoft Outlook</p>\n<p><strong>Тачан одговор:</strong> D) Microsoft Outlook<br />\n<strong>Објашњење:</strong> Microsoft Outlook је програм за е-пошту, а не веб-прегледач. Остали одговори су познати веб-прегледачи.</p>\n<hr />\n<p><strong>3. Шта је URL?</strong><br />\nA) Програм за прегледање веб-страница<br />\nB) Јединствена локација ресурса на интернету<br />\nC) Протокол за пренос података<br />\nD) Модератор веб-форума</p>\n<p><strong>Тачан одговор:</strong> B) Јединствена локација ресурса на интернету<br />\n<strong>Објашњење:</strong> URL (Uniform Resource Locator) је адреса која одређује локацију ресурса на интернету (нпр. https://www.example.com). Остали одговори нису дефиниција URL-а.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A1__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page3",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page3_title",
+          "html": "<h4>(LLM A) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/368/7/5577\" target=\"_blank\">Информатика 6 / Python / Променљиве - имена придружена подацима</a> AI asistentu je zadat prompt:</h4><h3>Издвој главне концепте из ове лекције. \nЗа сваки концепт дај два нивоа објашњенја: \nосновни ниво који треба да је разумљив свим ученицима и продубљен ниво.\n</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page3_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page3_response",
+              "html": "<h2>1) Osnovne aritmetičke operacije u Python-u</h2>\n<h3>Osnovni nivo</h3>\n<ul>\n<li>Python уме да рачуна као калкулатор.</li>\n<li>Три основне операције су:\n<ul>\n<li>sabiranje: <code>+</code></li>\n<li>oduzimanje: <code>-</code></li>\n<li>množenje: <code>*</code></li>\n</ul>\n</li>\n<li>Primeri: <code>3 + 5</code>, <code>8 - 2</code>, <code>4 * 6</code>.</li>\n</ul>\n<h3>Produbljen nivo</h3>\n<ul>\n<li>Zapisi su skoro isti kao u matematici, ali za množenje se koristi <code>*</code> (ne tačka <code>·</code>).</li>\n<li>Razmaci oko operatora (npr. <code>3 + 5</code>) nisu obavezni, ali se preporučuju jer kod postaje čitljiviji.</li>\n<li>Ove operacije se mogu kombinovati u duže izraze (vidi koncepte o izrazima i zagradama ispod).</li>\n</ul>\n<hr />\n<h2>2) Izrazi i izračunavanje vrednosti (Python kao “kalkulator”)</h2>\n<h3>Osnovni nivo</h3>\n<ul>\n<li>Izraz je nešto što Python može da izračuna (npr. <code>3 + 5</code>).</li>\n<li>U Python interpreteru možeš da ukucaš izraz i odmah dobiješ rezultat.</li>\n</ul>\n<h3>Produbljen nivo</h3>\n<ul>\n<li>Interpreter (ono gde vidiš <code>&gt;&gt;&gt;</code>) radi interaktivno: uneseš izraz → pritisneš Enter → dobiješ vrednost.</li>\n<li>Ovo je korisno za brzo proveravanje računanja i testiranje ideja pre nego što napišeš ceo program.</li>\n</ul>\n<hr />\n<h2>3) <code>print()</code> – prikaz rezultata u programu</h2>\n<h3>Osnovni nivo</h3>\n<ul>\n<li>Kada pišeš program (ne radiš direktno u interpreteru), rezultat se obično prikazuje pomoću <code>print()</code>.</li>\n<li>Primer: <code>print(3 + 5)</code> ispiše <code>8</code>.</li>\n</ul>\n<h3>Produbljen nivo</h3>\n<ul>\n<li>U skripti (.py fajlu) Python neće “sam od sebe” prikazati vrednost izraza; moraš eksplicitno da kažeš šta da se prikaže.</li>\n<li><code>print()</code> je osnovni način komunikacije programa sa korisnikom (prikaz poruka i rezultata).</li>\n</ul>\n<hr />\n<h2>4) Pisanje i pokretanje Python programa (skripte)</h2>\n<h3>Osnovni nivo</h3>\n<ul>\n<li>Program možeš napisati u IDLE-u ili u običnom editoru teksta.</li>\n<li>Program se čuva kao fajl sa nastavkom <code>.py</code> i zatim se pokreće.</li>\n</ul>\n<h3>Produbljen nivo</h3>\n<ul>\n<li>Razlika između interpreter-a i skripte:\n<ul>\n<li>Interpreter: odmah vidiš rezultat izraza.</li>\n<li>Skripta: pišeš više naredbi, čuvaš fajl, pa pokrećeš ceo program.</li>\n</ul>\n</li>\n<li>Čuvanje sa <code>.py</code> je važno da bi sistem i Python znali da je to Python kod.</li>\n</ul>\n<hr />\n<h2>5) Složeni izrazi i zagrade (kontrola redosleda računanja)</h2>\n<h3>Osnovni nivo</h3>\n<ul>\n<li>Možeš da pišeš duže izraze, npr. sa više operacija.</li>\n<li>Zagrade <code>()</code> služe da kažeš šta treba prvo da se izračuna.</li>\n<li>Primer: <code>(874 + 437) * (915 - 364)</code>.</li>\n</ul>\n<h3>Produbljen nivo</h3>\n<ul>\n<li>Zagrade menjaju “prioritet” računanja: deo u zagradama se računa pre ostatka.</li>\n<li>Ovo je isto kao u matematici i pomaže da izbegneš greške u složenim računima.</li>\n</ul>\n<hr />\n<h2>6) Prioritet operatora (redosled izvršavanja operacija)</h2>\n<h3>Osnovni nivo</h3>\n<ul>\n<li>Python ne računa sve sleva nadesno “kako piše”, već prati pravila redosleda operacija.</li>\n<li>Ako želiš da budeš siguran/na, koristi zagrade.</li>\n</ul>\n<h3>Produbljen nivo</h3>\n<ul>\n<li>Prioritet znači da neke operacije imaju prednost nad drugima (npr. množenje se obično računa pre sabiranja/oduzimanja).</li>\n<li>Razumevanje prioriteta je ključno da bi izraz dao tačan rezultat, posebno kad nema zagrada.</li>\n</ul>\n<hr />\n<p>Ako želiš, mogu da dodam kratke mini-zadatke (po 1–2) za svaki koncept da proveriš razumevanje.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A2__1__gpt-5.2__q1"
+        }
+      ]
+    },
+    {
+      "name": "page4",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page4_title",
+          "html": "<h4>(LLM B) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/368/7/5577\" target=\"_blank\">Информатика 6 / Python / Променљиве - имена придружена подацима</a> AI asistentu je zadat prompt:</h4><h3>Издвој главне концепте из ове лекције. \nЗа сваки концепт дај два нивоа објашњенја: \nосновни ниво који треба да је разумљив свим ученицима и продубљен ниво.\n</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page4_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page4_response",
+              "html": "<h3>1. Основне аритметичке операције</h3>\n<p><strong>Основни ниво:</strong><br />\nОперације као што су сабирање, одузимање и множење се користе у Pythonу као у математици (нпр. <code>3 + 5</code>, <code>8 - 2</code>, <code>4 * 6</code>).</p>\n<p><strong>Продубљен ниво:</strong><br />\nУ Pythonу се користе исти оператори као у математици (+, -, *), али је важно разумети да се изрази могу израчунавати директно у интерпретатору или кроз програме.</p>\n<hr />\n<h3>2. Коришћење Python интерпретатора</h3>\n<p><strong>Основни ниво:</strong><br />\nМожете унети изразе као <code>3 + 5</code> у Python интерпретатору и добити резултат (нпр. 8).</p>\n<p><strong>Продубљен ниво:</strong><br />\nИнтерпретатор Pythonа дозвољава директно тестирање израза, што је корисно за брзо проверавање рачунања без писања целог програма.</p>\n<hr />\n<h3>3. Писање и извршавање програма</h3>\n<p><strong>Основни ниво:</strong><br />\nПрограми се пишу у текстовим уређивачима (нпр. IDLE) и сачuvавају са променом <code>.py</code> да би се могли покренути.</p>\n<p><strong>Продубљен ниво:</strong><br />\nПрограми се извршавају командном линијом или у оквиру IDE-а, а коришћење правилног фајлова (<code>.py</code>) је неопходно за извршавање.</p>\n<hr />\n<h3>4. Сложени изрази и заграде</h3>\n<p><strong>Основни ниво:</strong><br />\nЗаграде се користе да би се контролисала редослед операција (нпр. <code>(874 + 437) * (915 - 364)</code>).</p>\n<p><strong>Продубљен ниво:</strong><br />\nПаренези могу променити приоритет операција, што је важно за тачан резултат усложених израза.</p>\n<hr />\n<h3>5. Приоритет оператора</h3>\n<p><strong>Основни ниво:</strong><br />\nОперације као што су множење имају већи приоритет од сабирања, што утиче на редослед израчунавања.</p>\n<p><strong>Продубљен ниво:</strong><br />\nАко не користите заграде, Python следи унутрашњи приоритет оператора (нпр. <code>3 + 4 * 2</code> се израчунава као <code>3 + (4 * 2)</code>).</p>\n<hr />\n<h3>6. Функција <code>print</code></h3>\n<p><strong>Основни ниво:</strong><br />\nФункција <code>print</code> се користи да би се приказала вредност израза (нпр. <code>print(3 + 5)</code>).</p>\n<p><strong>Продубљен ниво:</strong><br />\n<code>print</code> је корисна за приказ резултата у програмима, а може се користити за сложеније излазе (нпр. текст + бројеви).</p>\n<hr />\n<h3>7. Сачувавање и извршавање скрипти</h3>\n<p><strong>Основни ниво:</strong><br />\nСкрипте се сачuvавају као <code>.py</code> фајлови и покрећу се командном линијом.</p>\n<p><strong>Продубљен ниво:</strong><br />\nСачувани фајлови могу бити покрени у различитим оквирима (нпр. IDLE, терминал) и могу садржати више логичких корака.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A2__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page5",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page5_title",
+          "html": "<h4>(LLM A) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/368/8/5584\" target=\"_blank\">Информатика 6 / Python / Реално и целобројно дељење</a> AI asistentu je zadat prompt:</h4><h3>Направи ми план часа за ову лекцију. Час треба да трана 45 минута. \nНа крају предложи задатке за домаћи.\n</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page5_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page5_response",
+              "html": "<h2>План часа (45 мин) — Реално и целобројно дељење у Python-у</h2>\n<h3>1) Увод и мотивација (5 мин)</h3>\n<ul>\n<li>Кратак разговор: где у животу користимо дељење (просек оцена, подела новца, мерење/претварање јединица).</li>\n<li>Циљ часа (на табли/слајду):\n<ul>\n<li>разликовати <strong>реално дељење</strong> и <strong>целобројно дељење</strong>,</li>\n<li>користити операторе <strong><code>/</code></strong>, <strong><code>//</code></strong>, <strong><code>%</code></strong>,</li>\n<li>израчунати <strong>просек</strong>,</li>\n<li>применити целобројно дељење и остатак у <strong>претварању јединица</strong>.</li>\n</ul>\n</li>\n</ul>\n<hr />\n<h3>2) Објашњење: реално дељење <code>/</code> (8 мин)</h3>\n<ul>\n<li>Дефиниција: резултат је <strong>реалан број</strong>.</li>\n<li>Примери (показати у Python-у):\n<ul>\n<li><code>13 / 4</code> → <code>3.25</code></li>\n<li><code>5 / 2</code> → <code>2.5</code></li>\n<li><code>7.5 / 2.5</code> → <code>3.0</code></li>\n</ul>\n</li>\n<li>Напомена: у Python-у се користи <strong>децимална тачка</strong>, не зарез.</li>\n</ul>\n<p><strong>Брза провера (усмено/мини-квиз):</strong></p>\n<ul>\n<li>Шта је <code>4.5 / 5</code>? (0.9)</li>\n</ul>\n<hr />\n<h3>3) Објашњење: целобројно дељење <code>//</code> и остатак <code>%</code> (10 мин)</h3>\n<ul>\n<li>Дефиниција:\n<ul>\n<li><code>a // b</code> даје <strong>количник</strong> (цео број),</li>\n<li><code>a % b</code> даје <strong>остатак</strong>.</li>\n</ul>\n</li>\n<li>Примери:\n<ul>\n<li><code>13 // 4</code> → <code>3</code></li>\n<li><code>13 % 4</code> → <code>1</code></li>\n</ul>\n</li>\n<li>Повезивање: важи <code>a = (a // b) * b + (a % b)</code> (показати на примеру 13 и 4).</li>\n</ul>\n<p><strong>Кратка активност (парови, 2–3 мин у оквиру овог дела):</strong></p>\n<ul>\n<li>Ученици израчунају за <code>29</code> и <code>5</code>: <code>29 // 5</code> и <code>29 % 5</code>, па провере формулу.</li>\n</ul>\n<hr />\n<h3>4) Вођен пример: просек (10 мин)</h3>\n<ul>\n<li>Подсетник: просек = збир / број елемената.</li>\n<li>Пример из лекције (скокови удаљ): 8.12, 8.23, 8.17</li>\n<li>Заједно написати код:</li>\n</ul>\n<pre><code class=\"language-python\">a = 8.12\nb = 8.23\nc = 8.17\nprosek = (a + b + c) / 3\nprint(prosek)\n</code></pre>\n<ul>\n<li>Варијанта са уносом:</li>\n</ul>\n<pre><code class=\"language-python\">a = float(input(&quot;Унеси први скок: &quot;))\nb = float(input(&quot;Унеси други скок: &quot;))\nc = float(input(&quot;Унеси трећи скок: &quot;))\nprint((a + b + c) / 3)\n</code></pre>\n<p><strong>Питања за разумевање:</strong></p>\n<ul>\n<li>Зашто користимо <code>float(input(...))</code>?</li>\n<li>Шта би се десило да користимо <code>// 3</code> уместо <code>/ 3</code>?</li>\n</ul>\n<hr />\n<h3>5) Примена: претварање јединица (8 мин)</h3>\n<ul>\n<li>Задатак на табли: претвори <code>cm</code> у <code>m</code> и <code>cm</code>.</li>\n<li>Објаснити:\n<ul>\n<li>метри = <code>cm // 100</code></li>\n<li>преостали центиметри = <code>cm % 100</code></li>\n</ul>\n</li>\n</ul>\n<p>Пример кода:</p>\n<pre><code class=\"language-python\">cm = int(input(&quot;Унеси дужину у центиметрима: &quot;))\nm = cm // 100\nostatak = cm % 100\nprint(m, &quot;m&quot;, ostatak, &quot;cm&quot;)\n</code></pre>\n<hr />\n<h3>6) Завршна провера и резиме (4 мин)</h3>\n<ul>\n<li>Резиме на табли:\n<ul>\n<li><code>/</code> → реално дељење (реалан резултат)</li>\n<li><code>//</code> → целобројно дељење (цео количник)</li>\n<li><code>%</code> → остатак</li>\n<li>просек = збир / број</li>\n<li>претварање јединица користи <code>//</code> и <code>%</code></li>\n</ul>\n</li>\n<li>2 кратка питања за крај:\n<ul>\n<li>Колико је <code>17 // 3</code> и <code>17 % 3</code>?</li>\n<li>Који оператор користимо за просек?</li>\n</ul>\n</li>\n</ul>\n<hr />\n<h2>Домаћи задаци (предлог)</h2>\n<ol>\n<li><strong>Реално дељење</strong></li>\n</ol>\n<ul>\n<li>Израчунај и испиши резултате израза:\n<ul>\n<li><code>19 / 4</code></li>\n<li><code>7.2 / 3</code></li>\n<li><code>4.5 / 5</code></li>\n</ul>\n</li>\n</ul>\n<ol start=\"2\">\n<li><strong>Целобројно дељење и остатак</strong></li>\n</ol>\n<ul>\n<li>За бројеве <code>a = 58</code> и <code>b = 7</code> испиши:\n<ul>\n<li><code>a // b</code>, <code>a % b</code></li>\n</ul>\n</li>\n<li>Провери формулу: <code>a = (a // b) * b + (a % b)</code> (испиши обе стране).</li>\n</ul>\n<ol start=\"3\">\n<li><strong>Просек (са уносом)</strong></li>\n</ol>\n<ul>\n<li>Напиши програм који учита <strong>4 броја</strong> (реална) и испише њихов просек.</li>\n</ul>\n<ol start=\"4\">\n<li><strong>Претварање јединица</strong></li>\n</ol>\n<ul>\n<li>Учитај број секунди и прикажи га као:\n<ul>\n<li>број минута и преосталих секунди (користи <code>// 60</code> и <code>% 60</code>).</li>\n</ul>\n</li>\n</ul>\n<ol start=\"5\">\n<li><strong>Комбиновани задатак</strong></li>\n</ol>\n<ul>\n<li>Учитај укупан број бомбона и број деце. Испиши:\n<ul>\n<li>колико бомбона добија свако дете (<code>//</code>)</li>\n<li>колико бомбона остаје (<code>%</code>)</li>\n</ul>\n</li>\n</ul>\n<p>Ако желиш, могу да прилагодим план за конкретан узраст/разред и да додам кратак квиз (5 питања) за крај часа.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A3__1__gpt-5.2__q1"
+        }
+      ]
+    },
+    {
+      "name": "page6",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page6_title",
+          "html": "<h4>(LLM B) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/368/8/5584\" target=\"_blank\">Информатика 6 / Python / Реално и целобројно дељење</a> AI asistentu je zadat prompt:</h4><h3>Направи ми план часа за ову лекцију. Час треба да трана 45 минута. \nНа крају предложи задатке за домаћи.\n</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page6_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page6_response",
+              "html": "<h3>План часа: Реално и целобројно дељење у Python-у</h3>\n<p><strong>Трајање:</strong> 45 минута</p>\n<hr />\n<h4><strong>1. Увод (5 минута)</strong></h4>\n<ul>\n<li><strong>Циљ:</strong> Упознавање са темом и разликом између реалног и целобројног дељења.</li>\n<li><strong>Садржај:</strong>\n<ul>\n<li>Кратак преглед концепата: реално дељење (результат је реалан број) и целобројно дељење (результат је цео број, са могућим остатком).</li>\n<li>Пример: <code>13 / 4 = 3.25</code> (реално) vs <code>13 // 4 = 3</code> (целобројно) и <code>13 % 4 = 1</code> (остатак).</li>\n<li>Питанје за размисљање: <em>Зашто је важно разликовати ова два типа дељења?</em></li>\n</ul>\n</li>\n</ul>\n<hr />\n<h4><strong>2. Реално дељење (10 минута)</strong></h4>\n<ul>\n<li><strong>Циљ:</strong> Учење коришћења оператора <code>/</code> у Python-у.</li>\n<li><strong>Садржај:</strong>\n<ul>\n<li>Примери:\n<ul>\n<li><code>7.5 / 2.5 = 3.0</code></li>\n<li><code>5 / 2 = 2.5</code></li>\n<li><code>13 / 4 = 3.25</code></li>\n</ul>\n</li>\n<li>Објашњење: Реално дељење се користи када је потребан тачан резултат (нпр. просек, конверзија јединица).</li>\n<li>Задатак: <em>Колико је <code>4.5 / 5</code>?</em> (Очекиван одговор: <code>0.9</code>).</li>\n</ul>\n</li>\n</ul>\n<hr />\n<h4><strong>3. Целобројно дељење и остатак (10 минута)</strong></h4>\n<ul>\n<li><strong>Циљ:</strong> Учење коришћења оператора <code>//</code> и <code>%</code>.</li>\n<li><strong>Садржај:</strong>\n<ul>\n<li>Примери:\n<ul>\n<li><code>13 // 4 = 3</code> (количник)</li>\n<li><code>13 % 4 = 1</code> (остатак)</li>\n<li><code>100 // 3 = 33</code>, <code>100 % 3 = 1</code></li>\n</ul>\n</li>\n<li>Примена: Конверзија јединица (нпр. 135 цм = 1 м 35 цм: <code>135 // 100 = 1</code>, <code>135 % 100 = 35</code>).</li>\n<li>Задатак: <em>Конвертуј 250 цм у метре и центиметре.</em></li>\n</ul>\n</li>\n</ul>\n<hr />\n<h4><strong>4. Примена: Просек и јединице (10 минута)</strong></h4>\n<ul>\n<li><strong>Циљ:</strong> Креирање примера из реалног живота.</li>\n<li><strong>Садржај:</strong>\n<ul>\n<li><strong>Просек:</strong>\n<ul>\n<li>Пример: Скакач удаљ има скокове од 8.12, 8.23 и 8.17 метара.\n<ul>\n<li>Формула: <code>(8.12 + 8.23 + 8.17) / 3 = ?</code></li>\n<li>Решење: <code>8.1733...</code></li>\n</ul>\n</li>\n</ul>\n</li>\n<li><strong>Јединице:</strong>\n<ul>\n<li>Пример: Конвертуј 175 секунди у минуте и секунде: <code>175 // 60 = 2</code>, <code>175 % 60 = 55</code>.</li>\n</ul>\n</li>\n<li>Задатак: <em>Израчунај просек оцене 4.5, 3.8 и 5.0.</em></li>\n</ul>\n</li>\n</ul>\n<hr />\n<h4><strong>5. Практична вежба (5 минута)</strong></h4>\n<ul>\n<li><strong>Циљ:</strong> Примена теорије на задатке.</li>\n<li><strong>Садржај:</strong>\n<ul>\n<li>Решавање задатака у паровима:\n<ol>\n<li>Израчунај <code>15 / 2</code>, <code>15 // 2</code>, <code>15 % 2</code>.</li>\n<li>Конвертуј 345 цм у метре и центиметре.</li>\n<li>Израчунај просек бројева 7, 12 и 5.</li>\n</ol>\n</li>\n</ul>\n</li>\n</ul>\n<hr />\n<h4><strong>6. Закључак и питања (5 минута)</strong></h4>\n<ul>\n<li><strong>Циљ:</strong> Повећање разумевања и уклањање несигурности.</li>\n<li><strong>Садржај:</strong>\n<ul>\n<li>Кратак преглед:\n<ul>\n<li>Реално дељење (<code>/</code>) → резултат у облику <code>float</code>.</li>\n<li>Целобројно дељење (<code>//</code>) и остатак (<code>%</code>) → корисни за јединице и бројеве.</li>\n</ul>\n</li>\n<li>Питања: <em>Када користимо реално дељење? Како израчунати остатак?</em></li>\n</ul>\n</li>\n</ul>\n<hr />\n<h3><strong>Задаци за домаћи</strong></h3>\n<ol>\n<li>\n<p><strong>Теорија:</strong></p>\n<ul>\n<li>Објасни разлику између реалног и целобројног дељења.</li>\n<li>Наведи пример где се користи целобројно дељење.</li>\n</ul>\n</li>\n<li>\n<p><strong>Прорачуни:</strong></p>\n<ul>\n<li>Израчунај:\n<ul>\n<li><code>25 / 4</code></li>\n<li><code>25 // 4</code></li>\n<li><code>25 % 4</code></li>\n</ul>\n</li>\n<li>Конвертуј 278 цм у метре и центиметре.</li>\n</ul>\n</li>\n<li>\n<p><strong>Програмирање (опционално):</strong></p>\n<ul>\n<li>Напиши Python програм који:\n<ul>\n<li>Пита корисника да унесе три броја.</li>\n<li>Израчунава и исписује њихов просек.</li>\n<li>Пример: <code>broj1 = float(input(&quot;Унеси први број: &quot;))</code>, итд.</li>\n</ul>\n</li>\n</ul>\n</li>\n<li>\n<p><strong>Изазов:</strong></p>\n<ul>\n<li>Напиши програм који конвертује секунде у минуте и секунде (нпр. 125 секунди = 2 минута 5 секунди).</li>\n</ul>\n</li>\n</ol>\n<hr />\n<p><strong>Напомена:</strong> Задаци треба да укључују и теорију и практичну примену концепата.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A3__1__Qwen3-14B__q1"
+        }
+      ]
+    },
+    {
+      "name": "page7",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page7_title",
+          "html": "<h4>(LLM A) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/353/13/6909\" target=\"_blank\">Информатика 6 / Дититална писменост / Употреба ИКТ уређаја у мрежном окружењу</a> AI asistentu je zadat prompt:</h4><h3>Дај ми три теме за пројектни задатак везан за ову лекцију, \nукључујући инструкције за израду пројектонг задатка.</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page7_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page7_response",
+              "html": "<h2>1) „Моја кућна/школска мрежа“ (PAN/LAN) — мапа уређаја и повезивања</h2>\n<p><strong>Циљ:</strong> да препознаш ИКТ уређаје у окружењу и објасниш како су повезани (жичано/бежично) и који су мрежни уређаји (рутер, свич, модем, мрежна картица).</p>\n<p><strong>Инструкције за израду:</strong></p>\n<ol>\n<li><strong>Изабери окружење</strong>: кућа, учионица, школски кабинет или библиотека.</li>\n<li><strong>Попиши уређаје</strong> (нпр. рачунари, лаптоп, телефон, ТВ, штампач) и уз сваки наведи:\n<ul>\n<li>да ли је повезан <strong>жичано</strong> или <strong>бежично</strong>,</li>\n<li>да ли користи <strong>Wi‑Fi</strong> или кабл (UTP),</li>\n<li>да ли је то „клијент“ уређај (кориснички уређај) или мрежни уређај (рутер/свич/модем).</li>\n</ul>\n</li>\n<li><strong>Нацртај шему мреже</strong> (ручно или у алату као што су PowerPoint/Draw.io):\n<ul>\n<li>у средини постави <strong>рутер</strong> (и/или модем),</li>\n<li>повежи уређаје линијама и означи тип везе (кабл/Wi‑Fi).</li>\n</ul>\n</li>\n<li><strong>Класификуј мрежу</strong>: да ли је то <strong>PAN</strong> или <strong>LAN</strong> (и зашто).</li>\n<li><strong>Кратак закључак (5–8 реченица)</strong>: наведеш 3 предности умрежавања у твом примеру (нпр. дељење интернета, штампача, датотека).</li>\n</ol>\n<p><strong>Испорука:</strong> 1 страница шеме + 1 страница текста (или 5–7 слајдова).</p>\n<hr />\n<h2>2) „Клијент–сервер vs. P2P“ — поређење на конкретним примерима</h2>\n<p><strong>Циљ:</strong> да разумеш улоге у мрежи и како се деле ресурси (сервер/клијенти или равноправни уређаји).</p>\n<p><strong>Инструкције за израду:</strong></p>\n<ol>\n<li><strong>Направи табелу поређења</strong> са колонама: <em>особина</em>, <em>P2P</em>, <em>клијент–сервер</em>.</li>\n<li>У табелу обавезно унеси најмање 6 особина, нпр:\n<ul>\n<li>ко чува податке,</li>\n<li>одржавање и безбедност,</li>\n<li>број уређаја (мала/већа мрежа),</li>\n<li>дељење ресурса (штампач/фајлови),</li>\n<li>шта се дешава ако један уређај „испадне“,</li>\n<li>типична примена (кућа/школа/фирма).</li>\n</ul>\n</li>\n<li><strong>Додај 2 сценарија из праксе</strong>:\n<ul>\n<li>један где је бољи <strong>P2P</strong> (нпр. 3–5 рачунара у учионици деле фајлове),</li>\n<li>један где је бољи <strong>клијент–сервер</strong> (нпр. школа има сервер за налоге и дељене документе).</li>\n</ul>\n</li>\n<li><strong>Илустрација</strong>: нацртај две мале шеме (једна за P2P, једна за клијент–сервер).</li>\n<li><strong>Закључак</strong>: у 4–6 реченица напиши који модел би изабрао за школу и зашто.</li>\n</ol>\n<p><strong>Испорука:</strong> постер (A4/A3) или презентација (6–10 слајдова).</p>\n<hr />\n<h2>3) „Од URL‑а до IP‑а“ — како DNS и протоколи омогућавају приступ сајту</h2>\n<p><strong>Циљ:</strong> да објасниш делове URL адресе, разлику HTTP/HTTPS и улогу DNS‑а у превођењу домена у IP адресу.</p>\n<p><strong>Инструкције за израду:</strong></p>\n<ol>\n<li><strong>Изабери 3 веб‑адресе</strong> (нпр. једна .rs, једна .edu/.gov/.com, и једна са ћириличким доменом ако нађеш).</li>\n<li>За сваку адресу <strong>разложи URL</strong> на делове:\n<ul>\n<li>протокол (http/https),</li>\n<li>домен (и домен највишег нивоа: .rs, .com, .edu…),</li>\n<li>путања (ако постоји),</li>\n<li>назив ресурса (ако постоји, нпр. .pdf).</li>\n</ul>\n</li>\n<li><strong>Објасни DNS</strong>: напиши кратак текст (6–10 реченица) како се домен „преводи“ у IP адресу да би рачунари могли да комуницирају.</li>\n<li><strong>HTTP vs HTTPS</strong>:\n<ul>\n<li>напиши 3 разлике (нагласак на безбедности код HTTPS).</li>\n</ul>\n</li>\n<li><strong>Мини-речник појмова</strong> (5 појмова): протокол, IP адреса, MAC адреса, DNS, домен.</li>\n<li>(Опционо) <strong>Безбедно понашање</strong>: 5 правила за препознавање безбедних сајтова (нпр. HTTPS, пажња на домен, не уносити лозинке на сумњивим страницама).</li>\n</ol>\n<p><strong>Испорука:</strong> документ од 1–2 странице или инфографик.</p>\n<hr />\n<p>Ако ми кажеш да ли радиш <strong>постер, презентацију или писани рад</strong>, и за који разред/време израде, могу да ти предложим и <strong>критеријуме оцењивања</strong> (рубрику) и шаблон.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A4__1__gpt-5.2__q1"
+        }
+      ]
+    },
+    {
+      "name": "page8",
+      "elements": [
+        {
+          "type": "html",
+          "name": "page8_title",
+          "html": "<h4>(LLM B) U kontekstu lekcije <a href=\"https://petlja.org/sr-Latn-RS/kurs/353/13/6909\" target=\"_blank\">Информатика 6 / Дититална писменост / Употреба ИКТ уређаја у мрежном окружењу</a> AI asistentu je zadat prompt:</h4><h3>Дај ми три теме за пројектни задатак везан за ову лекцију, \nукључујући инструкције за израду пројектонг задатка.</h3>"
+        },
+        {
+          "type": "panel",
+          "name": "page8_aiPanel",
+          "title": "Odgovor AI asistenta",
+          "elements": [
+            {
+              "type": "html",
+              "name": "page8_response",
+              "html": "<h3>Три теме за пројектни задатак и инструкције за израду</h3>\n<hr />\n<h4><strong>1. Поређење врста рачунарских мрежа (PAN, LAN, MAN, WAN, Internet)</strong></h4>\n<p><strong>Циљ</strong>: Упоредити карактеристике, коришћење и примере сваке врсте мреже.<br />\n<strong>Инструкције</strong>:</p>\n<ul>\n<li>Испитати дефиницију, географску област, брзину преноса података и типичне примене сваке мреже (PAN, LAN, MAN, WAN, Internet).</li>\n<li>Креирати табелу или графички приказ који упоређује ове мреже.</li>\n<li>Додати примере из стварног света (нпр. LAN у школи, WAN за компанију).</li>\n<li>Објаснити зашто је Internet најмањи узимајући у обзир његову глобалну природу.</li>\n</ul>\n<hr />\n<h4><strong>2. Дизајнирање домаће рачунарске мреже</strong></h4>\n<p><strong>Циљ</strong>: Направити план домаће мреже и објаснити њене компоненте.<br />\n<strong>Инструкције</strong>:</p>\n<ul>\n<li>Описати које уређаје користите (рутер, свич, мрежна картица, модем, безбедносни мерници).</li>\n<li>Креирати дијаграм домаће мреже (користећи графички алат или ручно).</li>\n<li>Објаснити разлику између жичаних и бежичних веза у мрежи.</li>\n<li>Додати препоруке за безбедност (нпр. коришћење парола, фајервола).</li>\n</ul>\n<hr />\n<h4><strong>3. Домени, IP адресе и DNS: Како функционише интернет?</strong></h4>\n<p><strong>Циљ</strong>: Показати како се веб-адресе претварају у IP адресе.<br />\n<strong>Инструкције</strong>:</p>\n<ul>\n<li>Објаснити шта су MAC адресе, IP адресе и DNS.</li>\n<li>Користећи интернет алате (нпр. <code>ping</code>, <code>nslookup</code>, <code>ipconfig</code>), извршити практични пример (нпр. утврдити IP адресу за <code>google.rs</code>).</li>\n<li>Креирати табелу која упоређује географске и генеричке домене (нпр. <code>.rs</code>, <code>.edu</code>, <code>.com</code>).</li>\n<li>Објаснити зашто је DNS важан за кориснике (пример: лакше памћење веб-адреса уместо бројева).</li>\n</ul>\n<hr />\n<h3><strong>Опште инструкције за све пројекте</strong>:</h3>\n<ol>\n<li><strong>Избор теме</strong>: Изабрати једну од три теме и утврдити циљ пројекта.</li>\n<li><strong>Истраживање</strong>: Користити уџбеник, интернет и друге изvore за саопштења.</li>\n<li><strong>Форматирање</strong>: Рад урадити у облику текста, табела, дијаграма или презентације (у зависности од избора).</li>\n<li><strong>Додатни задаци</strong>: Укључити примере, сликe или вежбе (ако је могуће).</li>\n<li><strong>Приказ</strong>: Повратити рад у облику PDF, презентације или усталим излагањем.</li>\n</ol>\n<p>Савет: Користите графичке алате (нпр. Canva, Microsoft Paint) за дијаграме, а интернет алате за практичне примере.</p>\n"
+            }
+          ]
+        },
+        {
+          "type": "matrix",
+          "isRequired": true,
+          "isAllRowRequired": true,
+          "title": "U kojoj meri se slažeš sa sledećim tvrđenjima",
+          "columns": [
+            {
+              "value": 5,
+              "text": "Potpuno se slažem"
+            },
+            {
+              "value": 4,
+              "text": "Slažem se"
+            },
+            {
+              "value": 3,
+              "text": "Neodlučan sam"
+            },
+            {
+              "value": 2,
+              "text": "Ne slažem se"
+            },
+            {
+              "value": 1,
+              "text": "Uopšte se ne slažem"
+            }
+          ],
+          "rows": [
+            {
+              "value": "dom",
+              "text": "Odgovor je koristan za nastavnu praksu"
+            },
+            {
+              "value": "edu",
+              "text": "Izbor termina u odgovoru je adekvatan"
+            },
+            {
+              "value": "gra",
+              "text": "Srpski jezik u odgovoru zvuči prirodno"
+            },
+            {
+              "value": "srp",
+              "text": "Odgovor je u suštini jezički razumljiv, bez obzira da li biste vi nešto drugačije formulisali ili popravili"
+            }
+          ],
+          "name": "A4__1__Qwen3-14B__q1"
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "completedHtml": "<h3>Hvala vam!</h3>"
+}
