@@ -11,14 +11,15 @@ Each participant receives a unique token link to submit their response.
 - SQLAlchemy ORM with support for SQLite, PostgreSQL, and MS SQL Server
 - REST API with Swagger UI documentation
 - Admin endpoints secured with a bearer token
-- Packaged with Poetry — installable as a dependency via git
+- Managed with uv and installable as a dependency via Git
 
 ## Project Structure
 
 ```
 simple-survey/
-├── pyproject.toml          # Poetry package definition
-├── survey.json             # Survey definition (SurveyJS format)
+├── pyproject.toml          # Project and dependency definition
+├── .env.example            # Environment configuration template
+├── survey-sample.json      # Sample survey definition (SurveyJS format)
 ├── participants.json       # Seed file for initial participants
 ├── docker-compose.yml      # Local MS SQL Server for development
 └── simple_survey/
@@ -32,56 +33,37 @@ simple-survey/
 
 ## Running directly from this repo
 
-### 1. Create virtual environment and install dependencies
+### 1. Install dependencies
 
-Create virtual environment for this project. We suggest to use `.venv` subdirectory to place virtual environment.
-
-Activate your virtual environment.
-
-If you don't have Poetry installed, install it in your virtual environment:
+Install the package and all development dependencies. uv creates the `.venv`
+virtual environment automatically:
 
 ```bash
-pip install poetry
-```
-
-Install the package and all dev dependencies:
-
-```bash
-poetry install
+uv sync
 ```
 
 ### 2. Configure environment variables
 
-Create a `.env` file in the project root:
+Create a local `.env` file from the committed template, then adjust it as
+described in [Configuration](#configuration):
 
-```dotenv
-ADMIN_TOKEN=your-secret-token
-# DATABASE_URL defaults to sqlite:///survey.db if not set
-# DATABASE_URL=mssql+pymssql://user:pass@localhost:1433/survey
+```bash
+cp .env.example .env
+cp survey-sample.json survey.json
 ```
-
-Or set appropriate environment variables other way.
 
 ### 3. Run the app
 
-Ensure your virtual environment is activated, then:
-
 ```bash
-# Option A: Using Flask CLI
-FLASK_APP=simple_survey flask run
+# Option A: Using the Flask CLI
+uv run --env-file .env flask --app simple_survey run
 
 # Option B: Using gunicorn (production)
-gunicorn "simple_survey:create_app()"
+uv run --env-file .env gunicorn "simple_survey:create_app()"
 ```
 
-The app will look for `survey.json` and `participants.json` in the
-current working directory. You can override these paths with environment
-variables:
-
-```dotenv
-SURVEY_JSON_PATH=/absolute/path/to/survey.json
-PARTICIPANTS_SEED_PATH=/absolute/path/to/participants.json
-```
+The app resolves relative survey and participant file paths from the current
+working directory.
 
 ### 4. Access
 
@@ -92,27 +74,29 @@ PARTICIPANTS_SEED_PATH=/absolute/path/to/participants.json
 
 ## Using as a package in a deployment repo
 
-If you need a deployment repo to Azure or other deployment from Git, put th following files in the repo:
+If you need a deployment repo for Azure or another Git-based deployment,
+include the following files:
 
 ### Repo structure
 
 ```
 survey-deploy/
-├── requirements.txt
+├── pyproject.toml
+├── uv.lock
 ├── app.py
 ├── survey.json
 └── participants.json
 ```
 
-### requirements.txt
+### Dependencies
 
 Tag a release in this repo (`git tag v0.1.0 && git push origin v0.1.0`),
-then reference it:
+then initialize the deployment project and add the tagged package:
 
-```txt
-simple-survey @ git+https://github.com/YOUR_USER/simple-survey.git@v0.1.0
-pymssql>=2.2
-gunicorn>=22.0
+```bash
+uv init --bare
+uv add "simple-survey @ git+https://github.com/YOUR_USER/simple-survey.git@v0.1.0"
+uv add "pymssql>=2.2" "gunicorn>=22.0"
 ```
 
 ### app.py
@@ -126,38 +110,46 @@ app = create_app()
 ### Running
 
 ```bash
-gunicorn app:app
+uv run gunicorn app:app
 ```
 
 For Azure App Service, set `DATABASE_URL` and `ADMIN_TOKEN` as
-Application settings and use `gunicorn app:app` as the startup command.
+Application settings and use `uv run gunicorn app:app` as the startup command.
 
 ### Upgrading
 
-Update the tag in `requirements.txt` and redeploy.
+Update the package tag and redeploy:
+
+```bash
+uv add "simple-survey @ git+https://github.com/YOUR_USER/simple-survey.git@v0.2.0"
+```
 
 ---
 
 ## Configuration
 
+Copy `.env.example` to `.env` and customize it, or set the same variables in
+your environment. The run commands above load `.env` with `--env-file .env`.
+File paths may be relative to the current working directory or absolute.
+
 | Variable                 | Description                                              |
 | ------------------------ | -------------------------------------------------------- |
 | `ADMIN_TOKEN`            | Bearer token for admin API endpoints                     |
 | `DATABASE_URL`           | Database connection string (default: `sqlite:///survey.db`) |
-| `SURVEY_JSON_PATH`       | Path to survey JSON file (default: `./survey.json`)      |
-| `PARTICIPANTS_SEED_PATH` | Path to participants seed file (default: `./participants.json`) |
+| `SURVEY_JSON_PATH`       | Survey JSON path, relative to the working directory or absolute (default: `survey.json`) |
+| `PARTICIPANTS_SEED_PATH` | Participant seed path, relative to the working directory or absolute (default: `participants.json`) |
 
 ### Database driver extras
 
 ```bash
 # PostgreSQL
-poetry install -E postgres
+uv sync --extra postgres
 
 # MS SQL Server
-poetry install -E mssql
+uv sync --extra mssql
 
 # Production server
-poetry install -E prod
+uv sync --extra prod
 ```
 
 ## API Docs

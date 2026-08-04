@@ -22,10 +22,12 @@ def create_app(
     Parameters
     ----------
     survey_json_path:
-        Absolute path to the survey definition JSON file.
+        Path to the survey definition JSON file. Relative paths use the
+        current working directory.
         Defaults to ``survey.json`` in the current working directory.
     participants_seed_path:
-        Absolute path to the participants seed JSON file.
+        Path to the participants seed JSON file. Relative paths use the
+        current working directory.
         Defaults to ``participants.json`` in the current working directory.
     **config_overrides:
         Extra Flask config values (e.g. ``SQLALCHEMY_DATABASE_URI``).
@@ -76,7 +78,7 @@ def create_app(
     # Helpers
     # -----------------------------------------------------------------------
     def load_survey_json():
-        with open(survey_json_path, "r") as f:
+        with open(survey_json_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def find_participant(token):
@@ -100,7 +102,7 @@ def create_app(
         db.create_all()
         count = db.session.query(Participant).count()
         if count == 0 and os.path.exists(participants_seed_path):
-            with open(participants_seed_path, "r") as f:
+            with open(participants_seed_path, "r", encoding="utf-8") as f:
                 seed = json.load(f)["participants"]
             for p in seed:
                 existing = db.session.get(Participant, p["token"])
