@@ -12,6 +12,9 @@ dependencies = [
 	"python-dotenv>=1.0",
 ]
 
+[project.scripts]
+survey-preview = "simple_survey.cli:main"
+
 [project.optional-dependencies]
 postgres = ["psycopg2-binary>=2.9"]
 mssql = ["pymssql>=2.2"]

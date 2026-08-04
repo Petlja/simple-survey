@@ -15,7 +15,9 @@ from simple_survey.models import db, Participant, Response
 def create_app(
     survey_json_path: str | None = None,
     participants_seed_path: str | None = None,
-    **config_overrides,
+    database_url: str | None = None,
+    admin_token: str | None = None,
+    participants_seed: list[dict[str, str]] | None = None,
 ) -> Flask:
     """Application factory.
 
@@ -23,14 +25,20 @@ def create_app(
     ----------
     survey_json_path:
         Path to the survey definition JSON file. Relative paths use the
-        current working directory.
-        Defaults to ``survey.json`` in the current working directory.
+        current working directory. Defaults to the ``SURVEY_JSON_PATH``
+        environment variable, then ``survey.json``.
     participants_seed_path:
         Path to the participants seed JSON file. Relative paths use the
-        current working directory.
-        Defaults to ``participants.json`` in the current working directory.
-    **config_overrides:
-        Extra Flask config values (e.g. ``SQLALCHEMY_DATABASE_URI``).
+        current working directory. Defaults to the ``PARTICIPANTS_SEED_PATH``
+        environment variable, then ``participants.json``.
+    database_url:
+        Database connection string. Defaults to the ``DATABASE_URL``
+        environment variable, then ``sqlite:///survey.db``.
+    admin_token:
+        Bearer token for admin API endpoints. Defaults to the ``ADMIN_TOKEN``
+        environment variable.
+    participants_seed:
+        Participants to seed directly instead of reading the seed file.
     """
     app = Flask(__name__)
 
@@ -43,9 +51,10 @@ def create_app(
         "PARTICIPANTS_SEED_PATH", str(cwd / "participants.json")
     )
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "DATABASE_URL",
-        "sqlite:///" + str(cwd / "survey.db"),
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        database_url
+        if database_url is not None
+        else os.environ.get("DATABASE_URL", "sqlite:///" + str(cwd / "survey.db"))
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -67,12 +76,11 @@ def create_app(
         },
     }
 
-    # Apply overrides ---------------------------------------------------------
-    app.config.update(config_overrides)
-
     db.init_app(app)
 
-    ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+    ADMIN_TOKEN = (
+        admin_token if admin_token is not None else os.environ.get("ADMIN_TOKEN", "")
+    )
 
     # -----------------------------------------------------------------------
     # Helpers
@@ -101,9 +109,11 @@ def create_app(
     def init_db():
         db.create_all()
         count = db.session.query(Participant).count()
-        if count == 0 and os.path.exists(participants_seed_path):
+        seed = participants_seed
+        if seed is None and os.path.exists(participants_seed_path):
             with open(participants_seed_path, "r", encoding="utf-8") as f:
                 seed = json.load(f)["participants"]
+        if count == 0 and seed:
             for p in seed:
                 existing = db.session.get(Participant, p["token"])
                 if not existing:

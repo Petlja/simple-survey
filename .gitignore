@@ -6,6 +6,7 @@ survey.db
 dist/
 *.egg-info/
 survey.json
+participants.json
 .vscode/
 uv.lock
 

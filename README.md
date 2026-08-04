@@ -20,14 +20,38 @@ simple-survey/
 ├── pyproject.toml          # Project and dependency definition
 ├── .env.example            # Environment configuration template
 ├── survey-sample.json      # Sample survey definition (SurveyJS format)
-├── participants.json       # Seed file for initial participants
+├── participants.example.json # Empty participant seed example
 ├── docker-compose.yml      # Local MS SQL Server for development
 └── simple_survey/
     ├── __init__.py         # Exports create_app()
     ├── app.py              # Flask application factory
+    ├── cli.py              # Local survey preview command
     ├── models.py           # SQLAlchemy models
     └── templates/          # Jinja2 HTML templates
 ```
+
+---
+
+## Run as the `survey-preview` CLI tool
+
+After installing the package, preview a survey without configuring a database,
+admin token, or participant file:
+
+```bash
+survey-preview [survey-file]
+```
+
+When running from this repository, use:
+
+```bash
+uv run survey-preview [survey-file]
+```
+
+The survey file defaults to `survey.json`. The command creates temporary
+in-memory data, generates an admin token and participant, and prints the survey
+URL and interactive API console URL. Authorize in the API console with the
+printed admin token to manage participants and inspect responses. All preview
+data is discarded when the command stops.
 
 ---
 
@@ -50,7 +74,12 @@ described in [Configuration](#configuration):
 ```bash
 cp .env.example .env
 cp survey-sample.json survey.json
+cp participants.example.json participants.json
 ```
+
+`participants.json` is ignored by Git because participant tokens grant access
+to view and update that participant's response. Add development participants to
+the local copy, or create them through the admin API after starting the app.
 
 ### 3. Run the app
 
@@ -84,8 +113,7 @@ survey-deploy/
 ├── pyproject.toml
 ├── uv.lock
 ├── app.py
-├── survey.json
-└── participants.json
+└── survey.json
 ```
 
 ### Dependencies
@@ -113,8 +141,11 @@ app = create_app()
 uv run gunicorn app:app
 ```
 
-For Azure App Service, set `DATABASE_URL` and `ADMIN_TOKEN` as
-Application settings and use `uv run gunicorn app:app` as the startup command.
+For Azure App Service, set `DATABASE_URL` and `ADMIN_TOKEN` as Application
+settings and use `uv run gunicorn app:app` as the startup command. Create
+participants after deployment through the admin API. If initial seeding is
+required instead, provide an environment-specific file through deployment-managed
+storage and set `PARTICIPANTS_SEED_PATH` to its path; do not commit that file.
 
 ### Upgrading
 
@@ -137,7 +168,17 @@ File paths may be relative to the current working directory or absolute.
 | `ADMIN_TOKEN`            | Bearer token for admin API endpoints                     |
 | `DATABASE_URL`           | Database connection string (default: `sqlite:///survey.db`) |
 | `SURVEY_JSON_PATH`       | Survey JSON path, relative to the working directory or absolute (default: `survey.json`) |
-| `PARTICIPANTS_SEED_PATH` | Participant seed path, relative to the working directory or absolute (default: `participants.json`) |
+| `PARTICIPANTS_SEED_PATH` | Untracked or deployment-managed participant seed path (default: `participants.json`; absent files are skipped) |
+
+## Participant token security
+
+Participant tokens are bearer credentials: a token holder can open the survey,
+view an existing response, and submit an update. Keep production tokens out of
+source control and use different tokens in each environment.
+
+If tokens are committed, rotate the affected participants in every deployed
+database and send new links. Removing the file from a later commit does not
+invalidate existing database records or remove the values from Git history.
 
 ### Database driver extras
 
