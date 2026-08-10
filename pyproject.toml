@@ -5,6 +5,7 @@ description = "A lightweight Flask survey application using SurveyJS"
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
 dependencies = [
+	"click>=8.1",
 	"flask>=3.0",
 	"flask-smorest>=0.45",
 	"flask-sqlalchemy>=3.1",

@@ -1,13 +1,25 @@
-import argparse
 import ast
 import itertools
 import json
 import logging
 import re
 import secrets
+import socket
 from pathlib import Path
 
+import click
+from werkzeug.serving import ThreadedWSGIServer
+
 from simple_survey.app import create_app
+
+
+class _ExclusiveThreadedWSGIServer(ThreadedWSGIServer):
+    allow_reuse_address = False
+
+    def server_bind(self) -> None:
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
 
 _VARIABLE_REFERENCE_RE = re.compile(r"\{(?P<name>[^{}]+)\}")
@@ -82,28 +94,27 @@ def discover_variable_assignments(
     return assignments, unsupported_expressions
 
 
-def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(
-        prog="survey-preview",
-        description="Run a survey locally with temporary preview data.",
-    )
-    parser.add_argument(
-        "survey_file",
-        nargs="?",
-        default="survey.json",
-        help="survey JSON file (default: survey.json)",
-    )
-    args = parser.parse_args(argv)
-
-    survey_path = Path(args.survey_file)
-    if not survey_path.is_file():
-        parser.error(f"survey file not found: {survey_path}")
-
+@click.command(help="Run a survey locally with temporary preview data.")
+@click.argument(
+    "survey_file",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=Path("survey.json"),
+    required=False,
+)
+@click.option(
+    "-p",
+    "--port",
+    type=int,
+    default=5000,
+    show_default=True,
+    help="Port to serve on.",
+)
+def main(survey_file: Path, port: int) -> None:
     try:
-        with survey_path.open(encoding="utf-8") as survey_file:
-            survey = json.load(survey_file)
+        with survey_file.open(encoding="utf-8") as survey_stream:
+            survey = json.load(survey_stream)
     except (OSError, json.JSONDecodeError) as error:
-        parser.error(f"could not load survey file: {error}")
+        raise click.ClickException(f"could not load survey file: {error}") from error
 
     assignments, unsupported_expressions = discover_variable_assignments(survey)
     admin_token = secrets.token_urlsafe(32)
@@ -117,31 +128,38 @@ def main(argv: list[str] | None = None) -> None:
         participants.append(participant)
 
     app = create_app(
-        survey_json_path=str(survey_path),
+        survey_json_path=str(survey_file),
         participants_seed=participants,
         database_url="sqlite:///:memory:",
         admin_token=admin_token,
     )
 
-    base_url = "http://127.0.0.1:5000"
-    print("Survey preview is running with temporary in-memory data.")
-    print("Survey participants:")
-    for participant in participants:
-        variables = json.dumps(participant["variables"], ensure_ascii=False)
-        print(f"  {variables}: {base_url}/s/{participant['token']}")
-    print(f"API console: {base_url}/docs/")
-    print(f"Admin token: {admin_token}")
-    for expression in unsupported_expressions:
-        print(f"Warning: could not derive all variable values from visibleIf: {expression}")
-    print("Open the survey URL to submit a response.")
-    print("Open the API console and authorize with the admin token.")
-    print("Use its API operations to manage participants and inspect responses.")
-    print("Press Ctrl+C to stop; all preview data will be discarded.")
-
     logging.getLogger("werkzeug").addFilter(
         lambda r: "This is a development server" not in r.getMessage()
     )
-    app.run(host="127.0.0.1", port=5000, use_reloader=False)
+    with _ExclusiveThreadedWSGIServer("127.0.0.1", port, app) as server:
+        base_url = f"http://127.0.0.1:{port}"
+        click.echo("Survey preview is running with temporary in-memory data.")
+        click.echo("Survey participants:")
+        for participant in participants:
+            variables = json.dumps(participant["variables"], ensure_ascii=False)
+            click.echo(f"  {variables}: {base_url}/s/{participant['token']}")
+        click.echo(f"API console: {base_url}/docs/")
+        click.echo(f"Admin token: {admin_token}")
+        for expression in unsupported_expressions:
+            click.echo(
+                "Warning: could not derive all variable values from visibleIf: "
+                f"{expression}"
+            )
+        click.echo("Open the survey URL to submit a response.")
+        click.echo("Open the API console and authorize with the admin token.")
+        click.echo("Use its API operations to manage participants and inspect responses.")
+        click.echo("Press Ctrl+C to stop; all preview data will be discarded.")
+
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
 
 
 if __name__ == "__main__":

@@ -39,22 +39,22 @@ After installing the package, preview a survey without configuring a database,
 admin token, or participant file:
 
 ```bash
-survey-preview [survey-file]
+survey-preview [--port PORT] [survey-file]
 ```
 
 When running from this repository, use:
 
 ```bash
-uv run survey-preview [survey-file]
+uv run survey-preview [--port PORT] [survey-file]
 ```
 
-The survey file defaults to `survey.json`. The command creates temporary
-in-memory data and generates an admin token. It scans every `visibleIf` in the
-survey for literal variable comparisons such as `{group} = 1`, creates a preview
-participant for each discovered variable-value combination, and prints each
-participant's survey URL. Authorize in the API console with the printed admin
-token to manage participants and inspect responses. All preview data is
-discarded when the command stops.
+The survey file defaults to `survey.json`, and the port defaults to `5000`. The
+command creates temporary in-memory data and generates an admin token. It scans
+every `visibleIf` in the survey for literal variable comparisons such as
+`{group} = 1`, creates a preview participant for each discovered variable-value
+combination, and prints each participant's survey URL. Authorize in the API
+console with the printed admin token to manage participants and inspect
+responses. All preview data is discarded when the command stops.
 
 ---
 
