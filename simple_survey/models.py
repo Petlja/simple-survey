@@ -16,6 +16,7 @@ class Participant(db.Model):
         default=lambda: base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b"=").decode("ascii"),
     )
     label = db.Column(db.String(255), nullable=False)
+    variables = db.Column(db.JSON, nullable=False, default=dict)
     created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     response = db.relationship("Response", back_populates="participant", uselist=False, cascade="all, delete-orphan")
@@ -24,6 +25,7 @@ class Participant(db.Model):
         return {
             "token": self.token,
             "label": self.label,
+            "variables": self.variables,
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 

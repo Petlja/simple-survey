@@ -42,10 +42,12 @@
     <div id="surveyContainer" style="display: none;"></div>
     <script>
         const surveyJson = {{ survey_json | safe }};
+        const surveyVariables = {{ survey_variables | tojson }};
         const token = "{{ token }}";
         const previousAnswers = {{ previous_answers | safe if previous_answers else '{}' }};
 
         const survey = new Survey.Model(surveyJson);
+        Object.entries(surveyVariables).forEach(([name, value]) => survey.setVariable(name, value));
         survey.data = previousAnswers;
 
         survey.onTextMarkdown.add((sender, options) => {
@@ -80,9 +82,11 @@
     <div id="surveyContainer"></div>
     <script>
         const surveyJson = {{ survey_json | safe }};
+        const surveyVariables = {{ survey_variables | tojson }};
         const token = "{{ token }}";
 
         const survey = new Survey.Model(surveyJson);
+        Object.entries(surveyVariables).forEach(([name, value]) => survey.setVariable(name, value));
 
         survey.onTextMarkdown.add((sender, options) => {
             options.html = options.text;

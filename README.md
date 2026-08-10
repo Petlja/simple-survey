@@ -6,6 +6,7 @@ Each participant receives a unique token link to submit their response.
 ## Features
 
 - Token-based survey access (one response per participant)
+- Per-participant SurveyJS variables stored as a JSON object
 - Option to update a previously submitted response
 - Survey defined in `survey.json` (SurveyJS format)
 - SQLAlchemy ORM with support for SQLite, PostgreSQL, and MS SQL Server
@@ -48,10 +49,12 @@ uv run survey-preview [survey-file]
 ```
 
 The survey file defaults to `survey.json`. The command creates temporary
-in-memory data, generates an admin token and participant, and prints the survey
-URL and interactive API console URL. Authorize in the API console with the
-printed admin token to manage participants and inspect responses. All preview
-data is discarded when the command stops.
+in-memory data and generates an admin token. It scans every `visibleIf` in the
+survey for literal variable comparisons such as `{group} = 1`, creates a preview
+participant for each discovered variable-value combination, and prints each
+participant's survey URL. Authorize in the API console with the printed admin
+token to manage participants and inspect responses. All preview data is
+discarded when the command stops.
 
 ---
 
@@ -80,6 +83,25 @@ cp participants.example.json participants.json
 `participants.json` is ignored by Git because participant tokens grant access
 to view and update that participant's response. Add development participants to
 the local copy, or create them through the admin API after starting the app.
+
+Each participant can define a `variables` object whose entries are assigned with
+SurveyJS `setVariable` before the survey is rendered:
+
+```json
+{
+    "token": "00000000-0000-0000-0000-000000000000",
+    "label": "Example participant",
+    "variables": {
+        "group": 1,
+        "lessonId": 42
+    }
+}
+```
+
+Survey definitions can reference these values in expressions such as
+`{group} = 1`. The sample survey assigns pages 1-4 to group `1` and pages 5-8
+to group `2`. The participant create and update API operations accept
+the same `variables` object and return it in participant responses.
 
 ### 3. Run the app
 

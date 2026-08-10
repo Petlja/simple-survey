@@ -4,6 +4,7 @@
   "pages": [
     {
       "name": "page1",
+      "visibleIf": "{group} = 1",
       "elements": [
         {
           "type": "html",
@@ -73,6 +74,7 @@
     },
     {
       "name": "page2",
+      "visibleIf": "{group} = 1",
       "elements": [
         {
           "type": "html",
@@ -142,6 +144,7 @@
     },
     {
       "name": "page3",
+      "visibleIf": "{group} = 1",
       "elements": [
         {
           "type": "html",
@@ -211,6 +214,7 @@
     },
     {
       "name": "page4",
+      "visibleIf": "{group} = 1",
       "elements": [
         {
           "type": "html",
@@ -280,6 +284,7 @@
     },
     {
       "name": "page5",
+      "visibleIf": "{group} = 2",
       "elements": [
         {
           "type": "html",
@@ -349,6 +354,7 @@
     },
     {
       "name": "page6",
+      "visibleIf": "{group} = 2",
       "elements": [
         {
           "type": "html",
@@ -418,6 +424,7 @@
     },
     {
       "name": "page7",
+      "visibleIf": "{group} = 2",
       "elements": [
         {
           "type": "html",
@@ -487,6 +494,7 @@
     },
     {
       "name": "page8",
+      "visibleIf": "{group} = 2",
       "elements": [
         {
           "type": "html",

@@ -17,7 +17,7 @@ def create_app(
     participants_seed_path: str | None = None,
     database_url: str | None = None,
     admin_token: str | None = None,
-    participants_seed: list[dict[str, str]] | None = None,
+    participants_seed: list[dict[str, object]] | None = None,
 ) -> Flask:
     """Application factory.
 
@@ -92,7 +92,7 @@ def create_app(
     def find_participant(token):
         p = db.session.get(Participant, token)
         if p:
-            return {"token": p.token, "label": p.label}
+            return p.to_dict()
         return None
 
     def require_admin(f):
@@ -117,7 +117,13 @@ def create_app(
             for p in seed:
                 existing = db.session.get(Participant, p["token"])
                 if not existing:
-                    db.session.add(Participant(token=p["token"], label=p["label"]))
+                    db.session.add(
+                        Participant(
+                            token=p["token"],
+                            label=p["label"],
+                            variables=p.get("variables", {}),
+                        )
+                    )
             db.session.commit()
 
     def is_completed(token):
@@ -129,10 +135,12 @@ def create_app(
     class ParticipantSchema(Schema):
         token = fields.String(metadata={"format": "uuid"})
         label = fields.String(required=True)
+        variables = fields.Dict()
         created_at = fields.String(metadata={"format": "date-time"})
 
     class ParticipantCreateSchema(Schema):
         label = fields.String(required=True)
+        variables = fields.Dict(required=False)
 
     class SurveyResponseSchema(Schema):
         token = fields.String()
@@ -169,6 +177,7 @@ def create_app(
             "survey.html",
             token=token,
             survey_json=json.dumps(load_survey_json()),
+            survey_variables=participant["variables"],
             already_completed=is_completed(token),
             previous_answers=previous_answers,
         )
@@ -212,7 +221,10 @@ def create_app(
         @participants_blp.response(201, ParticipantSchema)
         @require_admin
         def post(self, body):
-            p = Participant(label=body["label"])
+            p = Participant(
+                label=body["label"],
+                variables=body.get("variables", {}),
+            )
             db.session.add(p)
             db.session.commit()
             return p.to_dict()
@@ -238,6 +250,8 @@ def create_app(
             if not p:
                 abort(404, message="Participant not found")
             p.label = body["label"]
+            if "variables" in body:
+                p.variables = body["variables"]
             db.session.commit()
             return p.to_dict()
 
