@@ -23,6 +23,7 @@ simple-survey/
 ├── survey-sample.json      # Sample survey definition (SurveyJS format)
 ├── participants.example.json # Empty participant seed example
 ├── docker-compose.yml      # Local MS SQL Server for development
+├── tests/                  # pytest regression tests
 └── simple_survey/
     ├── __init__.py         # Exports create_app()
     ├── app.py              # Flask application factory
@@ -120,6 +121,22 @@ working directory.
 
 - Survey page: `http://localhost:5000/s/<participant-token>`
 - Swagger UI: `http://localhost:5000/docs/`
+
+### 5. Run the tests
+
+```bash
+uv run playwright install chromium   # once, for the browser tests
+uv run pytest
+```
+
+The tests use a temporary SQLite database. Tests marked `browser` open the
+survey page in Chromium, which loads SurveyJS from unpkg.com; they are skipped
+when Chromium is not installed or unpkg.com cannot be reached. Run
+`uv run pytest -m "not browser"` to leave them out.
+
+To run the tests against PostgreSQL or MS SQL Server, set
+`SIMPLE_SURVEY_TEST_DATABASE_URL` to a throwaway database whose name contains
+`test`. The tests drop all tables in that database.
 
 ---
 

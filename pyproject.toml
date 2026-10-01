@@ -24,8 +24,16 @@ prod = ["gunicorn>=22.0"]
 [dependency-groups]
 dev = [
 	"gunicorn>=22.0",
+	"playwright>=1.63.0",
 	"psycopg2-binary>=2.9",
 	"pymssql>=2.2",
+	"pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+	"browser: drives the survey page in Chromium; needs `playwright install chromium` and access to unpkg.com",
 ]
 
 [build-system]

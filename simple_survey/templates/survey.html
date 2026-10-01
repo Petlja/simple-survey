@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Survey</title>
-    <link href="https://unpkg.com/survey-core/survey-core.min.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
+    <!-- Exact SurveyJS version so a new release cannot change behaviour while a survey is running. -->
+    <link href="https://unpkg.com/survey-core@3.1.2/survey-core.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/survey-core@3.1.2/survey.core.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-js-ui@3.1.2/survey-js-ui.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -33,6 +34,76 @@
     </style>
 </head>
 <body>
+    <script>
+        // Each write names the version it builds on; the server rejects it (409) if another window wrote since.
+        let version = {{ version | tojson }};
+        let staleWindow = false;
+        let conflictShown = false;
+        let writeQueue = Promise.resolve();
+
+        // Writes run one at a time so each names the version left by the previous one.
+        function enqueueWrite(task) {
+            const run = writeQueue.then(() => (staleWindow ? null : task()));
+            writeQueue = run.catch(() => {});
+            return run;
+        }
+
+        function newVersion() {
+            return Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join("");
+        }
+
+        async function postAnswers(url, payload, keepalive = false) {
+            const expected = version;
+            const proposed = newVersion();
+            version = proposed;
+            if (keepalive) rememberLeavingSave({ ...payload, expected, version: proposed });
+            let response;
+            try {
+                response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ...payload, expected_version: expected, new_version: proposed }),
+                    keepalive,
+                });
+            } catch (e) {
+                if (version === proposed) version = expected;
+                throw e;
+            }
+            if (response.status === 409) staleWindow = true;
+            else if (!response.ok && version === proposed) version = expected;
+            return response;
+        }
+
+        function reloadAfterConflict() {
+            staleWindow = true;
+            if (conflictShown) return;
+            conflictShown = true;
+            alert("Odgovori su u međuvremenu izmenjeni u drugom prozoru. Stranica će biti ponovo učitana.");
+            location.reload();
+        }
+
+        // A save sent while leaving can reach the server after this tab has already loaded the survey again.
+        const leavingSaveKey = "survey-leaving-save:" + {{ token | tojson }};
+
+        function rememberLeavingSave(saved) {
+            try {
+                sessionStorage.setItem(leavingSaveKey, JSON.stringify(saved));
+            } catch {}
+        }
+
+        function takeLeavingSave() {
+            try {
+                const saved = JSON.parse(sessionStorage.getItem(leavingSaveKey));
+                sessionStorage.removeItem(leavingSaveKey);
+                // The server rendered this page before that save arrived, so continue from the save.
+                if (saved && saved.expected === version) {
+                    version = saved.version;
+                    return saved;
+                }
+            } catch {}
+            return null;
+        }
+    </script>
     {% if already_completed %}
     <div class="already-completed">
         <h2>Upitnik je već popunjen</h2>
@@ -44,7 +115,8 @@
         const surveyJson = {{ survey_json | safe }};
         const surveyVariables = {{ survey_variables | tojson }};
         const token = "{{ token }}";
-        const previousAnswers = {{ previous_answers | safe if previous_answers else '{}' }};
+        const leavingSave = takeLeavingSave();
+        const previousAnswers = leavingSave ? leavingSave.answers : {{ previous_answers | tojson }};
 
         const survey = new Survey.Model(surveyJson);
         Object.entries(surveyVariables).forEach(([name, value]) => survey.setVariable(name, value));
@@ -55,16 +127,14 @@
         });
 
         survey.onComplete.add(async (sender) => {
-            const results = sender.data;
             try {
-                const response = await fetch(`/api/submit/${token}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(results),
-                });
-                if (!response.ok) {
+                const response = await enqueueWrite(() => postAnswers(`/api/submit/${token}`, { answers: sender.data }));
+                if (!response) return;
+                if (response.status === 409) {
+                    reloadAfterConflict();
+                } else if (!response.ok) {
                     const err = await response.json();
-                    alert("Error submitting survey: " + (err.error || "Unknown error"));
+                    alert("Error submitting survey: " + (err.message || err.error || "Unknown error"));
                 }
             } catch (e) {
                 alert("Network error. Please try again.");
@@ -84,25 +154,28 @@
         const surveyJson = {{ survey_json | safe }};
         const surveyVariables = {{ survey_variables | tojson }};
         const token = "{{ token }}";
+        const leavingSave = takeLeavingSave();
+        const previousAnswers = leavingSave ? leavingSave.answers : {{ previous_answers | tojson }};
+        const lastPage = leavingSave ? leavingSave.page : {{ last_page | tojson }};
 
         const survey = new Survey.Model(surveyJson);
         Object.entries(surveyVariables).forEach(([name, value]) => survey.setVariable(name, value));
+        if (previousAnswers) survey.data = previousAnswers;
+        if (lastPage !== null && lastPage < survey.visiblePageCount) survey.currentPageNo = lastPage;
 
         survey.onTextMarkdown.add((sender, options) => {
             options.html = options.text;
         });
 
         survey.onComplete.add(async (sender) => {
-            const results = sender.data;
             try {
-                const response = await fetch(`/api/submit/${token}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(results),
-                });
-                if (!response.ok) {
+                const response = await enqueueWrite(() => postAnswers(`/api/submit/${token}`, { answers: sender.data }));
+                if (!response) return;
+                if (response.status === 409) {
+                    reloadAfterConflict();
+                } else if (!response.ok) {
                     const err = await response.json();
-                    alert("Error submitting survey: " + (err.error || "Unknown error"));
+                    alert("Error submitting survey: " + (err.message || err.error || "Unknown error"));
                 }
             } catch (e) {
                 alert("Network error. Please try again.");
@@ -115,5 +188,55 @@
         });
     </script>
     {% endif %}
+    <script>
+        let draftDirty = false;
+        let lastSave = Promise.resolve();
+        // True only while leavePage() runs, so just the save it starts outlives the page.
+        let leavingPage = false;
+        // Saving on each change lets the server reject an overwrite while the user is still in this window.
+        survey.onValueChanged.add(() => { draftDirty = true; saveDraft(); });
+        survey.onCurrentPageChanged.add(() => { draftDirty = true; saveDraft(); });
+
+        // SurveyJS awaits this handler, so the page switches only after all answers are saved.
+        survey.onCurrentPageChanging.add(async (sender, options) => {
+            saveDraft();
+            await Promise.all([writeQueue, lastSave]);
+            if (staleWindow) {
+                options.allow = false;
+            } else if (draftDirty) {
+                options.allow = false;
+                options.message = "Odgovori nisu snimljeni. Proverite internet vezu i pokušajte ponovo.";
+            }
+        });
+
+        // Saves skip SurveyJS validation, so incomplete required answers are kept as-is.
+        function saveDraft() {
+            if (!draftDirty || staleWindow || survey.state === "completed") return;
+            draftDirty = false;
+            const keepalive = leavingPage;
+            lastSave = enqueueWrite(() => postAnswers(`/api/save/${token}`, { answers: survey.data, page: survey.currentPageNo }, keepalive))
+                .then((response) => {
+                    if (!response) return;
+                    if (response.status === 409) {
+                        reloadAfterConflict();
+                    } else if (!response.ok) {
+                        draftDirty = true;
+                    }
+                })
+                .catch(() => { draftDirty = true; });
+        }
+
+        function leavePage() {
+            leavingPage = true;
+            // SurveyJS stores typed text only when the field loses focus.
+            document.activeElement?.blur();
+            saveDraft();
+            leavingPage = false;
+        }
+
+        // Firefox and WebKit can drop a save started in pagehide when a tab closes; iOS Safari has no beforeunload.
+        window.addEventListener("beforeunload", leavePage);
+        window.addEventListener("pagehide", leavePage);
+    </script>
 </body>
 </html>

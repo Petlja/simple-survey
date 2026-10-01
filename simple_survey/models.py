@@ -36,6 +36,12 @@ class Response(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     token = db.Column(db.String(64), db.ForeignKey("participants.token"), nullable=False, unique=True)
     response_data = db.Column(db.Text, nullable=False)
+    # "draft" until first submit; later saves keep "submitted" and may lack required answers.
+    status = db.Column(db.String(16), nullable=False, server_default="submitted")
+    # Zero-based index among visible SurveyJS pages.
+    last_page = db.Column(db.Integer, nullable=True)
+    # Browser-proposed id of the last write; a write must name it to prevent overwriting another window.
+    version = db.Column(db.String(64), nullable=True)
     submitted_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     participant = db.relationship("Participant", back_populates="response")

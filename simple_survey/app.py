@@ -8,6 +8,8 @@ from flask import Flask, render_template, request, jsonify, abort as flask_abort
 from flask.views import MethodView
 from flask_smorest import Api, Blueprint, abort
 from marshmallow import Schema, fields
+from sqlalchemy import inspect, text, update
+from sqlalchemy.exc import IntegrityError
 
 from simple_survey.models import db, Participant, Response
 
@@ -108,6 +110,18 @@ def create_app(
 
     def init_db():
         db.create_all()
+        # Databases created by older versions lack these columns.
+        added_response_columns = {
+            "status": "VARCHAR(16) NOT NULL DEFAULT 'submitted'",
+            "last_page": "INTEGER",
+            "version": "VARCHAR(64)",
+        }
+        response_columns = {c["name"] for c in inspect(db.engine).get_columns("responses")}
+        with db.engine.begin() as conn:
+            for name, ddl in added_response_columns.items():
+                if name not in response_columns:
+                    # SQL Server rejects the optional COLUMN keyword.
+                    conn.execute(text(f"ALTER TABLE responses ADD {name} {ddl}"))
         count = db.session.query(Participant).count()
         seed = participants_seed
         if seed is None and os.path.exists(participants_seed_path):
@@ -127,7 +141,62 @@ def create_app(
             db.session.commit()
 
     def is_completed(token):
-        return db.session.query(Response).filter_by(token=token).first() is not None
+        return (
+            db.session.query(Response).filter_by(token=token, status="submitted").first()
+            is not None
+        )
+
+    def parse_write_body():
+        body = request.get_json(silent=True)
+        if not isinstance(body, dict):
+            abort(400, message="Body must be a JSON object")
+        answers = body.get("answers")
+        if not isinstance(answers, dict):
+            abort(400, message="answers must be a JSON object")
+        expected_version = body.get("expected_version")
+        if expected_version is not None and not isinstance(expected_version, str):
+            abort(400, message="expected_version must be a string or null")
+        new_version = body.get("new_version")
+        if not isinstance(new_version, str) or not 0 < len(new_version) <= 64:
+            abort(400, message="new_version must be a non-empty string of at most 64 characters")
+        return body, answers, expected_version, new_version
+
+    def reject_conflict(token, expected_version, new_version):
+        db.session.rollback()
+        participant = db.session.get(Participant, token)
+        stored = db.session.query(Response.version).filter_by(token=token).scalar()
+        # The token grants survey access, so it is not logged.
+        app.logger.warning(
+            "Write conflict on %s for participant %r: expected version %r, stored %r, rejected %r",
+            request.path.rsplit("/", 1)[0],
+            participant.label if participant else None,
+            expected_version,
+            stored,
+            new_version,
+        )
+        abort(409, message="Answers were changed in another window")
+
+    def write_response(token, expected_version, insert_values, update_values):
+        """Write only if the stored version equals expected_version; abort 409 otherwise."""
+        version_matches = (
+            Response.version.is_(None)
+            if expected_version is None
+            else Response.version == expected_version
+        )
+        result = db.session.execute(
+            update(Response)
+            .where(Response.token == token, version_matches)
+            .values(**update_values)
+        )
+        if result.rowcount == 0:
+            if expected_version is not None:
+                reject_conflict(token, expected_version, update_values["version"])
+            db.session.add(Response(token=token, **insert_values))
+            try:
+                db.session.flush()
+            except IntegrityError:
+                reject_conflict(token, expected_version, insert_values["version"])
+        db.session.commit()
 
     # -----------------------------------------------------------------------
     # Marshmallow schemas
@@ -145,6 +214,8 @@ def create_app(
     class SurveyResponseSchema(Schema):
         token = fields.String()
         label = fields.String()
+        status = fields.String(metadata={"enum": ["draft", "submitted"]})
+        last_page = fields.Integer(allow_none=True)
         submitted_at = fields.String(metadata={"format": "date-time"})
         answers = fields.Dict()
 
@@ -167,20 +238,20 @@ def create_app(
         if not participant:
             flask_abort(404)
 
-        previous_answers = None
-        if is_completed(token):
-            resp = db.session.query(Response).filter_by(token=token).first()
-            if resp:
-                previous_answers = resp.response_data
+        resp = db.session.query(Response).filter_by(token=token).first()
 
-        return render_template(
+        page = render_template(
             "survey.html",
             token=token,
             survey_json=json.dumps(load_survey_json()),
             survey_variables=participant["variables"],
-            already_completed=is_completed(token),
-            previous_answers=previous_answers,
+            already_completed=resp is not None and resp.status == "submitted",
+            previous_answers=json.loads(resp.response_data) if resp else None,
+            last_page=resp.last_page if resp and resp.status == "draft" else None,
+            version=resp.version if resp else None,
         )
+        # The Back button would otherwise show cached answers and a version from an earlier visit.
+        return page, {"Cache-Control": "no-store"}
 
     @app.route("/thank-you")
     def thank_you():
@@ -275,18 +346,38 @@ def create_app(
             if not participant:
                 abort(404, message="Invalid token")
 
-            data = request.get_json()
-            if not data:
-                abort(400, message="No data provided")
+            _, answers, expected_version, new_version = parse_write_body()
+            values = {
+                "response_data": json.dumps(answers),
+                "status": "submitted",
+                "version": new_version,
+                "submitted_at": datetime.now(timezone.utc),
+            }
+            write_response(token, expected_version, values, values)
+            return {"status": "ok"}
 
-            existing = db.session.query(Response).filter_by(token=token).first()
-            if existing:
-                existing.response_data = json.dumps(data)
-                existing.submitted_at = datetime.now(timezone.utc)
-            else:
-                r = Response(token=token, response_data=json.dumps(data))
-                db.session.add(r)
-            db.session.commit()
+    @survey_blp.route("/save/<token>")
+    class SurveySave(MethodView):
+
+        @survey_blp.response(200, StatusSchema)
+        def post(self, token):
+            """Save answers without requiring all required questions; keeps current status."""
+            participant = find_participant(token)
+            if not participant:
+                abort(404, message="Invalid token")
+
+            body, answers, expected_version, new_version = parse_write_body()
+            page = body.get("page")
+            if page is not None and (type(page) is not int or page < 0):
+                abort(400, message="page must be a non-negative integer")
+
+            values = {
+                "response_data": json.dumps(answers),
+                "last_page": page,
+                "version": new_version,
+                "submitted_at": datetime.now(timezone.utc),
+            }
+            write_response(token, expected_version, {**values, "status": "draft"}, values)
             return {"status": "ok"}
 
     # -- Responses -----------------------------------------------------------
@@ -307,6 +398,8 @@ def create_app(
                 {
                     "token": r.token,
                     "label": label,
+                    "status": r.status,
+                    "last_page": r.last_page,
                     "submitted_at": r.submitted_at.isoformat() if r.submitted_at else None,
                     "answers": json.loads(r.response_data),
                 }
