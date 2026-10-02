@@ -43,8 +43,10 @@ def database_url(database_url):
 def test_missing_columns_are_added(app, database_url):
     engine = create_engine(database_url)
     columns = {column["name"] for column in inspect(engine).get_columns("responses")}
+    tables = set(inspect(engine).get_table_names())
     engine.dispose()
     assert {"status", "last_page", "version"} <= columns
+    assert "participant_questions" in tables
 
 
 def test_existing_response_counts_as_submitted(api):
@@ -52,6 +54,8 @@ def test_existing_response_counts_as_submitted(api):
     assert stored["status"] == "submitted"
     assert stored["answers"] == {"q1": "a"}
     assert stored["last_page"] is None
+    # Answers stored before the table existed are not backfilled.
+    assert api.questions("answered") == {}
     page = api.page("answered")
     assert page.completed
     assert page.value("version") is None
@@ -61,6 +65,7 @@ def test_existing_response_counts_as_submitted(api):
 def test_existing_response_accepts_one_write_without_a_version(api):
     assert api.save("answered", {"q1": "b"}, None, "v1", page=1).status_code == 200
     assert api.stored("answered")["status"] == "submitted"
+    assert set(api.questions("answered")) == {"q1"}
     assert api.save("answered", {"q1": "c"}, None, "v2").status_code == 409
 
 

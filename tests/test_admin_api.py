@@ -1,11 +1,13 @@
 def test_responses_require_the_admin_token(client):
     assert client.get("/api/responses").status_code == 401
     assert client.get("/api/responses", headers={"Authorization": "Bearer wrong"}).status_code == 401
+    assert client.get("/api/participant-questions", headers={"Authorization": "Bearer wrong"}).status_code == 401
 
 
 def test_responses_fail_without_a_configured_admin_token(make_app):
     client = make_app(admin_token="").test_client()
     assert client.get("/api/responses", headers={"Authorization": "Bearer "}).status_code == 500
+    assert client.get("/api/participant-questions", headers={"Authorization": "Bearer "}).status_code == 500
 
 
 def test_responses_include_drafts(client, api, participant, admin_headers):
@@ -23,5 +25,7 @@ def test_responses_include_drafts(client, api, participant, admin_headers):
 def test_deleting_a_participant_deletes_the_response(client, api, participant, admin_headers):
     token = participant("t1")
     api.save(token, {"q1": "a"}, None, "v1", page=0)
+    assert set(api.questions(token)) == {"q1"}
     assert client.delete(f"/api/participants/{token}", headers=admin_headers).status_code == 204
     assert api.stored(token) is None
+    assert api.questions(token) == {}

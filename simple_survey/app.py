@@ -8,10 +8,10 @@ from flask import Flask, render_template, request, jsonify, abort as flask_abort
 from flask.views import MethodView
 from flask_smorest import Api, Blueprint, abort
 from marshmallow import Schema, fields
-from sqlalchemy import inspect, text, update
+from sqlalchemy import inspect, select, text, update
 from sqlalchemy.exc import IntegrityError
 
-from simple_survey.models import db, Participant, Response
+from simple_survey.models import db, Participant, ParticipantQuestion, Response
 
 
 def create_app(
@@ -176,7 +176,21 @@ def create_app(
         )
         abort(409, message="Answers were changed in another window")
 
-    def write_response(token, expected_version, insert_values, update_values):
+    def record_participant_questions(token, answers):
+        """Store when each answer key (question name) first appeared for the participant."""
+        known = set(
+            db.session.scalars(
+                select(ParticipantQuestion.question_name).where(ParticipantQuestion.token == token)
+            )
+        )
+        now = datetime.now(timezone.utc)
+        for name in answers:
+            if name not in known:
+                db.session.add(
+                    ParticipantQuestion(token=token, question_name=name, first_answered_at=now)
+                )
+
+    def write_response(token, expected_version, insert_values, update_values, answers):
         """Write only if the stored version equals expected_version; abort 409 otherwise."""
         version_matches = (
             Response.version.is_(None)
@@ -196,6 +210,7 @@ def create_app(
                 db.session.flush()
             except IntegrityError:
                 reject_conflict(token, expected_version, insert_values["version"])
+        record_participant_questions(token, answers)
         db.session.commit()
 
     # -----------------------------------------------------------------------
@@ -218,6 +233,12 @@ def create_app(
         last_page = fields.Integer(allow_none=True)
         submitted_at = fields.String(metadata={"format": "date-time"})
         answers = fields.Dict()
+
+    class ParticipantQuestionSchema(Schema):
+        token = fields.String()
+        label = fields.String()
+        question_name = fields.String()
+        first_answered_at = fields.String(metadata={"format": "date-time"})
 
     class ErrorSchema(Schema):
         error = fields.String()
@@ -353,7 +374,7 @@ def create_app(
                 "version": new_version,
                 "submitted_at": datetime.now(timezone.utc),
             }
-            write_response(token, expected_version, values, values)
+            write_response(token, expected_version, values, values, answers)
             return {"status": "ok"}
 
     @survey_blp.route("/save/<token>")
@@ -377,7 +398,7 @@ def create_app(
                 "version": new_version,
                 "submitted_at": datetime.now(timezone.utc),
             }
-            write_response(token, expected_version, {**values, "status": "draft"}, values)
+            write_response(token, expected_version, {**values, "status": "draft"}, values, answers)
             return {"status": "ok"}
 
     # -- Responses -----------------------------------------------------------
@@ -404,6 +425,29 @@ def create_app(
                     "answers": json.loads(r.response_data),
                 }
                 for r, label in rows
+            ]
+
+    @responses_blp.route("/participant-questions")
+    class ParticipantQuestionList(MethodView):
+
+        @responses_blp.doc(security=[{"BearerAuth": []}])
+        @responses_blp.response(200, ParticipantQuestionSchema(many=True))
+        @require_admin
+        def get(self):
+            rows = (
+                db.session.query(ParticipantQuestion, Participant.label)
+                .outerjoin(Participant, ParticipantQuestion.token == Participant.token)
+                .order_by(ParticipantQuestion.first_answered_at, ParticipantQuestion.id)
+                .all()
+            )
+            return [
+                {
+                    "token": q.token,
+                    "label": label,
+                    "question_name": q.question_name,
+                    "first_answered_at": q.first_answered_at.isoformat(),
+                }
+                for q, label in rows
             ]
 
     # -----------------------------------------------------------------------

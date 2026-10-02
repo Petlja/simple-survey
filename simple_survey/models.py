@@ -20,6 +20,7 @@ class Participant(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     response = db.relationship("Response", back_populates="participant", uselist=False, cascade="all, delete-orphan")
+    participant_questions = db.relationship("ParticipantQuestion", cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
@@ -45,3 +46,15 @@ class Response(db.Model):
     submitted_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     participant = db.relationship("Participant", back_populates="response")
+
+
+class ParticipantQuestion(db.Model):
+    """When a question name first appeared in a participant's saved answers."""
+
+    __tablename__ = "participant_questions"
+    __table_args__ = (db.UniqueConstraint("token", "question_name"),)
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(64), db.ForeignKey("participants.token"), nullable=False)
+    question_name = db.Column(db.String(255), nullable=False)
+    first_answered_at = db.Column(db.DateTime, nullable=False)

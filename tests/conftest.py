@@ -68,6 +68,11 @@ class SurveyApi:
         rows = self.client.get("/api/responses", headers={"Authorization": f"Bearer {ADMIN_TOKEN}"}).get_json()
         return next((row for row in rows if row["token"] == token), None)
 
+    def questions(self, token):
+        """Return {question_name: first_answered_at} recorded for the participant."""
+        rows = self.client.get("/api/participant-questions", headers={"Authorization": f"Bearer {ADMIN_TOKEN}"}).get_json()
+        return {row["question_name"]: row["first_answered_at"] for row in rows if row["token"] == token}
+
     def page(self, token):
         return RenderedPage(self.client.get(f"/s/{token}"))
 

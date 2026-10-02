@@ -14,37 +14,41 @@ def test_stale_save_is_rejected_and_changes_nothing(api, participant):
     token = participant("t1")
     api.save(token, {"q1": "a"}, None, "v1", page=0)
     api.save(token, {"q1": "b"}, "v1", "v2", page=1)
-    response = api.save(token, {"q1": "stale"}, "v1", "v3", page=2)
+    response = api.save(token, {"q1": "stale", "q2": "t"}, "v1", "v3", page=2)
     assert response.status_code == 409
     assert response.get_json() == CONFLICT
     stored = api.stored(token)
     assert stored["answers"] == {"q1": "b"}
     assert stored["last_page"] == 1
     assert api.page(token).value("version") == "v2"
+    assert set(api.questions(token)) == {"q1"}
 
 
 @pytest.mark.parametrize("expected", [None, "unknown"])
 def test_save_must_name_the_stored_version(api, participant, expected):
     token = participant("t1")
     api.save(token, {"q1": "a"}, None, "v1", page=0)
-    assert api.save(token, {"q1": "b"}, expected, "v2").status_code == 409
+    assert api.save(token, {"q1": "b", "q2": "t"}, expected, "v2").status_code == 409
     assert api.stored(token)["answers"] == {"q1": "a"}
+    assert set(api.questions(token)) == {"q1"}
 
 
 def test_stale_submit_is_rejected_and_changes_nothing(api, participant):
     token = participant("t1")
     api.save(token, {"q1": "a"}, None, "v1", page=0)
     api.save(token, {"q1": "b"}, "v1", "v2", page=0)
-    assert api.submit(token, {"q1": "stale"}, "v1", "v3").status_code == 409
+    assert api.submit(token, {"q1": "stale", "q2": "t"}, "v1", "v3").status_code == 409
     stored = api.stored(token)
     assert stored["status"] == "draft"
     assert stored["answers"] == {"q1": "b"}
+    assert set(api.questions(token)) == {"q1"}
 
 
 def test_write_naming_a_version_creates_no_response(api, participant):
     token = participant("t1")
     assert api.submit(token, {"q1": "a"}, "v0", "v1").status_code == 409
     assert api.stored(token) is None
+    assert api.questions(token) == {}
 
 
 def test_conflicts_are_logged_without_the_token(api, participant, caplog):
@@ -91,12 +95,13 @@ def test_only_one_of_simultaneous_writes_is_accepted(app, api, participant):
     base_url = f"http://127.0.0.1:{server.server_port}/api"
     try:
         expected = None
+        winner_questions = set()
         for round_no in range(3):
             # Saves race submits; in the first round they also race to create the response.
             requests = [
                 (
                     f"{base_url}/{'submit' if index % 2 else 'save'}/{token}",
-                    {"answers": {"writer": index}, "expected_version": expected, "new_version": f"r{round_no}w{index}"},
+                    {"answers": {f"writer{index}": round_no}, "expected_version": expected, "new_version": f"r{round_no}w{index}"},
                 )
                 for index in range(10)
             ]
@@ -106,7 +111,9 @@ def test_only_one_of_simultaneous_writes_is_accepted(app, api, participant):
             expected = f"r{round_no}w{winners[0]}"
             page = api.page(token)
             assert page.value("version") == expected
-            assert page.value("previousAnswers") == {"writer": winners[0]}
+            assert page.value("previousAnswers") == {f"writer{winners[0]}": round_no}
+            winner_questions.add(f"writer{winners[0]}")
+            assert set(api.questions(token)) == winner_questions
     finally:
         server.shutdown()
         server.server_close()
